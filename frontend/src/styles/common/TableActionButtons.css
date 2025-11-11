@@ -1,0 +1,56 @@
+button {
+  padding: 5px 10px;
+  margin: 0 4px;
+  font-size: 14px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:hover {
+  opacity: 0.9;
+}
+
+.edit-button {
+  background-color: #4c4cff;
+  color: white;
+}
+
+.view-details-button {
+  background-color: #00bfa6;
+  color: white;
+}
+
+.delete-button {
+  background-color: #ff4c4c;
+  color: white;
+}
+
+.open-button {
+  background-color: #3d2691;
+  color: white;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+button:disabled:hover {
+  opacity: 0.5;
+}
+
+.approve-button {
+  background-color: #4caf50;
+  color: white;
+}
+
+.reject-button {
+  background-color: #ff4c4c;
+  color: white;
+}
+
+.close-button {
+  background-color: #3d2691;
+  color: white;
+}

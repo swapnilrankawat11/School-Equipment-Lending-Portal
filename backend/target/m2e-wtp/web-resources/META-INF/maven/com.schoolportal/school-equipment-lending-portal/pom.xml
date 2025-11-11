@@ -1,0 +1,67 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                             https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.schoolportal</groupId>
+  <artifactId>school-equipment-lending-portal</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>war</packaging>
+
+  <name>School Equipment Lending Portal</name>
+  <description>A web-based portal for managing and lending school equipment.</description>
+
+  <!-- ✅ Compiler and Encoding Settings -->
+  <properties>
+    <maven.compiler.source>21</maven.compiler.source>
+    <maven.compiler.target>21</maven.compiler.target>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
+  <!-- ✅ Dependencies -->
+  <dependencies>
+    <!-- Servlet API (Tomcat 10.x compatible - Jakarta EE 10) -->
+    <dependency>
+      <groupId>jakarta.servlet</groupId>
+      <artifactId>jakarta.servlet-api</artifactId>
+      <version>6.0.0</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <!-- PostgreSQL JDBC Driver -->
+    <dependency>
+      <groupId>org.postgresql</groupId>
+      <artifactId>postgresql</artifactId>
+      <version>42.7.3</version>
+    </dependency>
+
+    <!-- JSON Simple (for parsing JSON in Servlets if needed) -->
+    <dependency>
+      <groupId>com.googlecode.json-simple</groupId>
+      <artifactId>json-simple</artifactId>
+      <version>1.1.1</version>
+    </dependency>
+
+		<!-- Gson (for JSON serialization and deserialization) -->
+	<dependency>
+  	  <groupId>com.google.code.gson</groupId>
+  	  <artifactId>gson</artifactId>
+  	  <version>2.10.1</version>
+	</dependency>
+	
+	<dependency>
+  	  <groupId>org.mindrot</groupId>
+  	  <artifactId>jbcrypt</artifactId>
+  	  <version>0.4</version>
+	</dependency>
+
+  </dependencies>
+
+	
+  <build>
+    <finalName>school-equipment-lending-portal</finalName>
+  </build>
+
+</project>
