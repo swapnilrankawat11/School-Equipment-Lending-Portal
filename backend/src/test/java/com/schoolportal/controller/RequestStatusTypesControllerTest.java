@@ -23,40 +23,36 @@ import com.schoolportal.service.RequestStatusTypeService;
 @AutoConfigureMockMvc(addFilters = false)
 class RequestStatusTypesControllerTest {
 
-    @Autowired
-    private MockMvc mockMvc;
+	@Autowired
+	private MockMvc mockMvc;
 
-    @Autowired
-    private ObjectMapper objectMapper;
+	@Autowired
+	private ObjectMapper objectMapper;
 
-    @MockitoBean
-    private RequestStatusTypeService statusService;
+	@MockitoBean
+	private RequestStatusTypeService statusService;
 
-    @Test
-    void getAllRequestStatusTypes_shouldReturnStatuses() throws Exception {
+	@Test
+	void getAllRequestStatusTypes_shouldReturnStatuses() throws Exception {
 
-        List<RequestStatusTypeDTO> statuses = List.of(
-                new RequestStatusTypeDTO(1, "Pending"),
-                new RequestStatusTypeDTO(2, "Approved"));
+		List<RequestStatusTypeDTO> statuses = List.of(new RequestStatusTypeDTO(1, "Pending"),
+				new RequestStatusTypeDTO(2, "Approved"));
 
-        when(statusService.getAllRequestStatusTypes()).thenReturn(statuses);
+		when(statusService.getAllRequestStatusTypes()).thenReturn(statuses);
 
-        mockMvc.perform(get("/RequestStatusTypesServlet"))
-                .andExpect(status().isOk())
-                .andExpect(content().json(objectMapper.writeValueAsString(statuses)));
+		mockMvc.perform(get("/RequestStatusTypesServlet")).andExpect(status().isOk())
+				.andExpect(content().json(objectMapper.writeValueAsString(statuses)));
 
-        verify(statusService).getAllRequestStatusTypes();
-    }
+		verify(statusService).getAllRequestStatusTypes();
+	}
 
-    @Test
-    void getAllRequestStatusTypes_shouldReturnEmptyList() throws Exception {
+	@Test
+	void getAllRequestStatusTypes_shouldReturnEmptyList() throws Exception {
 
-        when(statusService.getAllRequestStatusTypes()).thenReturn(List.of());
+		when(statusService.getAllRequestStatusTypes()).thenReturn(List.of());
 
-        mockMvc.perform(get("/RequestStatusTypesServlet"))
-                .andExpect(status().isOk())
-                .andExpect(content().json("[]"));
+		mockMvc.perform(get("/RequestStatusTypesServlet")).andExpect(status().isOk()).andExpect(content().json("[]"));
 
-        verify(statusService).getAllRequestStatusTypes();
-    }
+		verify(statusService).getAllRequestStatusTypes();
+	}
 }

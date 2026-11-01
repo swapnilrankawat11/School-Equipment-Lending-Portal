@@ -13,32 +13,32 @@ import com.schoolportal.repository.UserTypeRepository;
 @Service
 public class UserTypeService {
 
-    private final UserTypeRepository userTypeRepository;
+	private final UserTypeRepository userTypeRepository;
 
-    public UserTypeService(UserTypeRepository userTypeRepository) {
-        this.userTypeRepository = userTypeRepository;
-    }
+	public UserTypeService(UserTypeRepository userTypeRepository) {
+		this.userTypeRepository = userTypeRepository;
+	}
 
-    @Transactional(readOnly = true)
-    public List<UserTypeDTO> getUserTypes() {
+	@Transactional(readOnly = true)
+	public List<UserTypeDTO> getUserTypes() {
 
-        List<UserType> userTypes = userTypeRepository.findAll();
+		List<UserType> userTypes = userTypeRepository.findAll();
 
-        return userTypes.stream().map(userType -> {
+		return userTypes.stream().map(userType -> {
 
-            UserTypeDTO dto = new UserTypeDTO();
+			UserTypeDTO dto = new UserTypeDTO();
 
-            dto.setId(userType.getId());
-            dto.setUserType(userType.getUserType());
+			dto.setId(userType.getId());
+			dto.setUserType(userType.getUserType());
 
-            dto.setCreatedBy(userType.getCreatedBy());
-            dto.setModifiedBy(userType.getModifiedBy());
+			dto.setCreatedBy(userType.getCreatedBy());
+			dto.setModifiedBy(userType.getModifiedBy());
 
-            dto.setCreatedAt(userType.getCreatedAt());
-            dto.setModifiedAt(userType.getModifiedAt());
+			dto.setCreatedAt(userType.getCreatedAt());
+			dto.setModifiedAt(userType.getModifiedAt());
 
-            return dto;
+			return dto;
 
-        }).toList();
-    }
+		}).toList();
+	}
 }

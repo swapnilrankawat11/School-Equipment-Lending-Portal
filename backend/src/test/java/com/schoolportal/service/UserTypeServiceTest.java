@@ -20,50 +20,49 @@ import com.schoolportal.repository.UserTypeRepository;
 @ExtendWith(MockitoExtension.class)
 class UserTypeServiceTest {
 
-    @Mock
-    private UserTypeRepository userTypeRepository;
+	@Mock
+	private UserTypeRepository userTypeRepository;
 
-    @InjectMocks
-    private UserTypeService userTypeService;
+	@InjectMocks
+	private UserTypeService userTypeService;
 
-    private UserType userType;
+	private UserType userType;
 
-    @BeforeEach
-    void setUp() {
+	@BeforeEach
+	void setUp() {
 
-        userType = new UserType();
+		userType = new UserType();
 
-        userType.setId(1);
-        userType.setUserType("Student");
-        userType.setCreatedBy(10);
-        userType.setModifiedBy(10);
-    }
+		userType.setId(1);
+		userType.setUserType("Student");
+		userType.setCreatedBy(10);
+		userType.setModifiedBy(10);
+	}
 
-    @Test
-    void getUserTypes_shouldReturnMappedDTOs() {
+	@Test
+	void getUserTypes_shouldReturnMappedDTOs() {
 
-        when(userTypeRepository.findAll())
-                .thenReturn(List.of(userType));
+		when(userTypeRepository.findAll()).thenReturn(List.of(userType));
 
-        List<UserTypeDTO> result = userTypeService.getUserTypes();
+		List<UserTypeDTO> result = userTypeService.getUserTypes();
 
-        assertEquals(1, result.size());
+		assertEquals(1, result.size());
 
-        UserTypeDTO dto = result.get(0);
+		UserTypeDTO dto = result.get(0);
 
-        assertEquals(1, dto.getId());
-        assertEquals("Student", dto.getUserType());
-        assertEquals(10, dto.getCreatedBy());
-        assertEquals(10, dto.getModifiedBy());
-    }
+		assertEquals(1, dto.getId());
+		assertEquals("Student", dto.getUserType());
+		assertEquals(10, dto.getCreatedBy());
+		assertEquals(10, dto.getModifiedBy());
+	}
 
-    @Test
-    void getUserTypes_emptyList_shouldReturnEmptyList() {
+	@Test
+	void getUserTypes_emptyList_shouldReturnEmptyList() {
 
-        when(userTypeRepository.findAll()).thenReturn(List.of());
+		when(userTypeRepository.findAll()).thenReturn(List.of());
 
-        List<UserTypeDTO> result = userTypeService.getUserTypes();
+		List<UserTypeDTO> result = userTypeService.getUserTypes();
 
-        assertTrue(result.isEmpty());
-    }
+		assertTrue(result.isEmpty());
+	}
 }

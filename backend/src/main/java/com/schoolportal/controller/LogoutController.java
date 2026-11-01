@@ -15,16 +15,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/LogoutServlet")
 public class LogoutController {
 
-    @PostMapping
-    public ResponseEntity<Map<String, Boolean>> logout(
-            HttpServletRequest request) {
+	@PostMapping
+	public ResponseEntity<Map<String, Boolean>> logout(HttpServletRequest request) {
 
-        HttpSession session = request.getSession(false);
+		HttpSession session = request.getSession(false);
 
-        if (session != null) {
-            session.invalidate();
-        }
+		if (session != null) {
+			session.invalidate();
+		}
 
-        return ResponseEntity.ok(Map.of("success", true));
-    }
+		return ResponseEntity.ok(Map.of("success", true));
+	}
 }

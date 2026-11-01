@@ -23,41 +23,36 @@ import com.schoolportal.service.UserTypeService;
 @AutoConfigureMockMvc(addFilters = false)
 class UserTypesControllerTest {
 
-    @Autowired
-    private MockMvc mockMvc;
+	@Autowired
+	private MockMvc mockMvc;
 
-    @Autowired
-    private ObjectMapper objectMapper;
+	@Autowired
+	private ObjectMapper objectMapper;
 
-    @MockitoBean
-    private UserTypeService userTypeService;
+	@MockitoBean
+	private UserTypeService userTypeService;
 
-    @Test
-    void getUserTypes_shouldReturnUserTypes() throws Exception {
+	@Test
+	void getUserTypes_shouldReturnUserTypes() throws Exception {
 
-        List<UserTypeDTO> userTypes = List.of(
-                new UserTypeDTO(1, "Admin"),
-                new UserTypeDTO(2, "Staff"),
-                new UserTypeDTO(3, "Student"));
+		List<UserTypeDTO> userTypes = List.of(new UserTypeDTO(1, "Admin"), new UserTypeDTO(2, "Staff"),
+				new UserTypeDTO(3, "Student"));
 
-        when(userTypeService.getUserTypes()).thenReturn(userTypes);
+		when(userTypeService.getUserTypes()).thenReturn(userTypes);
 
-        mockMvc.perform(get("/UserTypesServlet"))
-                .andExpect(status().isOk())
-                .andExpect(content().json(objectMapper.writeValueAsString(userTypes)));
+		mockMvc.perform(get("/UserTypesServlet")).andExpect(status().isOk())
+				.andExpect(content().json(objectMapper.writeValueAsString(userTypes)));
 
-        verify(userTypeService).getUserTypes();
-    }
+		verify(userTypeService).getUserTypes();
+	}
 
-    @Test
-    void getUserTypes_shouldReturnEmptyList() throws Exception {
+	@Test
+	void getUserTypes_shouldReturnEmptyList() throws Exception {
 
-        when(userTypeService.getUserTypes()).thenReturn(List.of());
+		when(userTypeService.getUserTypes()).thenReturn(List.of());
 
-        mockMvc.perform(get("/UserTypesServlet"))
-                .andExpect(status().isOk())
-                .andExpect(content().json("[]"));
+		mockMvc.perform(get("/UserTypesServlet")).andExpect(status().isOk()).andExpect(content().json("[]"));
 
-        verify(userTypeService).getUserTypes();
-    }
+		verify(userTypeService).getUserTypes();
+	}
 }

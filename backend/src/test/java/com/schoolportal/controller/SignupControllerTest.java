@@ -23,57 +23,50 @@ import com.schoolportal.service.AuthService;
 @AutoConfigureMockMvc(addFilters = false)
 class SignupControllerTest {
 
-    @Autowired
-    private MockMvc mockMvc;
+	@Autowired
+	private MockMvc mockMvc;
 
-    @Autowired
-    private ObjectMapper objectMapper;
+	@Autowired
+	private ObjectMapper objectMapper;
 
-    @MockitoBean
-    private AuthService authService;
+	@MockitoBean
+	private AuthService authService;
 
-    @Test
-    void signup_shouldReturnSuccessTrue() throws Exception {
+	@Test
+	void signup_shouldReturnSuccessTrue() throws Exception {
 
-        User user = new User();
+		User user = new User();
 
-        when(authService.signup(any(User.class))).thenReturn(true);
+		when(authService.signup(any(User.class))).thenReturn(true);
 
-        mockMvc.perform(post("/SignupServlet")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(user)))
-                .andExpect(status().isOk())
-                .andExpect(content().json("{\"success\":true}"));
+		mockMvc.perform(post("/SignupServlet").contentType(MediaType.APPLICATION_JSON)
+				.content(objectMapper.writeValueAsString(user))).andExpect(status().isOk())
+				.andExpect(content().json("{\"success\":true}"));
 
-        verify(authService).signup(any(User.class));
-    }
+		verify(authService).signup(any(User.class));
+	}
 
-    @Test
-    void signup_shouldReturnSuccessFalse() throws Exception {
+	@Test
+	void signup_shouldReturnSuccessFalse() throws Exception {
 
-        User user = new User();
+		User user = new User();
 
-        when(authService.signup(any(User.class))).thenReturn(false);
+		when(authService.signup(any(User.class))).thenReturn(false);
 
-        mockMvc.perform(post("/SignupServlet")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(user)))
-                .andExpect(status().isOk())
-                .andExpect(content().json("{\"success\":false}"));
-    }
+		mockMvc.perform(post("/SignupServlet").contentType(MediaType.APPLICATION_JSON)
+				.content(objectMapper.writeValueAsString(user))).andExpect(status().isOk())
+				.andExpect(content().json("{\"success\":false}"));
+	}
 
-    @Test
-    void signup_shouldReturnBadRequestWhenServiceThrowsException() throws Exception {
+	@Test
+	void signup_shouldReturnBadRequestWhenServiceThrowsException() throws Exception {
 
-        User user = new User();
+		User user = new User();
 
-        when(authService.signup(any(User.class)))
-                .thenThrow(new RuntimeException("Email already exists"));
+		when(authService.signup(any(User.class))).thenThrow(new RuntimeException("Email already exists"));
 
-        mockMvc.perform(post("/SignupServlet")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(user)))
-                .andExpect(status().isBadRequest())
-                .andExpect(content().json("{\"error\":\"Email already exists\"}"));
-    }
+		mockMvc.perform(post("/SignupServlet").contentType(MediaType.APPLICATION_JSON)
+				.content(objectMapper.writeValueAsString(user))).andExpect(status().isBadRequest())
+				.andExpect(content().json("{\"error\":\"Email already exists\"}"));
+	}
 }

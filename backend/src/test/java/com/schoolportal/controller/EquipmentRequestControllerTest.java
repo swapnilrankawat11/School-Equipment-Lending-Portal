@@ -29,146 +29,120 @@ import com.schoolportal.service.EquipmentRequestService;
 @AutoConfigureMockMvc(addFilters = false)
 class EquipmentRequestControllerTest {
 
-    @Autowired
-    private MockMvc mockMvc;
+	@Autowired
+	private MockMvc mockMvc;
 
-    @Autowired
-    private ObjectMapper objectMapper;
+	@Autowired
+	private ObjectMapper objectMapper;
 
-    @MockitoBean
-    private EquipmentRequestService equipmentRequestService;
+	@MockitoBean
+	private EquipmentRequestService equipmentRequestService;
 
-    @Test
-    void createEquipmentRequest_shouldReturnSuccessTrue() throws Exception {
+	@Test
+	void createEquipmentRequest_shouldReturnSuccessTrue() throws Exception {
 
-        EquipmentRequestDTO request = new EquipmentRequestDTO();
+		EquipmentRequestDTO request = new EquipmentRequestDTO();
 
-        when(equipmentRequestService.createEquipmentRequest(any(EquipmentRequestDTO.class)))
-                .thenReturn(true);
+		when(equipmentRequestService.createEquipmentRequest(any(EquipmentRequestDTO.class))).thenReturn(true);
 
-        mockMvc.perform(post("/EquipmentRequestServlet")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request)))
-                .andExpect(status().isOk())
-                .andExpect(content().json("{\"success\":true}"));
+		mockMvc.perform(post("/EquipmentRequestServlet").contentType(MediaType.APPLICATION_JSON)
+				.content(objectMapper.writeValueAsString(request))).andExpect(status().isOk())
+				.andExpect(content().json("{\"success\":true}"));
 
-        verify(equipmentRequestService).createEquipmentRequest(any(EquipmentRequestDTO.class));
-    }
+		verify(equipmentRequestService).createEquipmentRequest(any(EquipmentRequestDTO.class));
+	}
 
-    @Test
-    void createEquipmentRequest_shouldReturnSuccessFalse() throws Exception {
+	@Test
+	void createEquipmentRequest_shouldReturnSuccessFalse() throws Exception {
 
-        EquipmentRequestDTO request = new EquipmentRequestDTO();
+		EquipmentRequestDTO request = new EquipmentRequestDTO();
 
-        when(equipmentRequestService.createEquipmentRequest(any(EquipmentRequestDTO.class)))
-                .thenReturn(false);
+		when(equipmentRequestService.createEquipmentRequest(any(EquipmentRequestDTO.class))).thenReturn(false);
 
-        mockMvc.perform(post("/EquipmentRequestServlet")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request)))
-                .andExpect(status().isOk())
-                .andExpect(content().json("{\"success\":false}"));
-    }
+		mockMvc.perform(post("/EquipmentRequestServlet").contentType(MediaType.APPLICATION_JSON)
+				.content(objectMapper.writeValueAsString(request))).andExpect(status().isOk())
+				.andExpect(content().json("{\"success\":false}"));
+	}
 
-    @Test
-    void getEquipmentRequests_withoutStatusFilter_shouldReturnRequestsByStatus() throws Exception {
+	@Test
+	void getEquipmentRequests_withoutStatusFilter_shouldReturnRequestsByStatus() throws Exception {
 
-        List<EquipmentRequestDTO> requests = List.of(new EquipmentRequestDTO());
+		List<EquipmentRequestDTO> requests = List.of(new EquipmentRequestDTO());
 
-        when(equipmentRequestService.getEquipmentRequestsByStatusType(1))
-                .thenReturn(requests);
+		when(equipmentRequestService.getEquipmentRequestsByStatusType(1)).thenReturn(requests);
 
-        mockMvc.perform(get("/EquipmentRequestServlet/1"))
-                .andExpect(status().isOk())
-                .andExpect(content().json(objectMapper.writeValueAsString(requests)));
+		mockMvc.perform(get("/EquipmentRequestServlet/1")).andExpect(status().isOk())
+				.andExpect(content().json(objectMapper.writeValueAsString(requests)));
 
-        verify(equipmentRequestService).getEquipmentRequestsByStatusType(1);
-    }
+		verify(equipmentRequestService).getEquipmentRequestsByStatusType(1);
+	}
 
-    @Test
-    void getEquipmentRequests_withStatusFilter_shouldReturnStudentRequestsByStatus() throws Exception {
+	@Test
+	void getEquipmentRequests_withStatusFilter_shouldReturnStudentRequestsByStatus() throws Exception {
 
-        List<EquipmentRequestDTO> requests = List.of(new EquipmentRequestDTO());
+		List<EquipmentRequestDTO> requests = List.of(new EquipmentRequestDTO());
 
-        when(equipmentRequestService.getEquipmentRequestsByStudentAndStatus(1, 2))
-                .thenReturn(requests);
+		when(equipmentRequestService.getEquipmentRequestsByStudentAndStatus(1, 2)).thenReturn(requests);
 
-        mockMvc.perform(get("/EquipmentRequestServlet/1")
-                .param("statusFilterId", "2"))
-                .andExpect(status().isOk())
-                .andExpect(content().json(objectMapper.writeValueAsString(requests)));
+		mockMvc.perform(get("/EquipmentRequestServlet/1").param("statusFilterId", "2")).andExpect(status().isOk())
+				.andExpect(content().json(objectMapper.writeValueAsString(requests)));
 
-        verify(equipmentRequestService).getEquipmentRequestsByStudentAndStatus(1, 2);
-    }
+		verify(equipmentRequestService).getEquipmentRequestsByStudentAndStatus(1, 2);
+	}
 
-    @Test
-    void getEquipmentRequests_shouldReturnEmptyListWhenNoRequestsExist() throws Exception {
+	@Test
+	void getEquipmentRequests_shouldReturnEmptyListWhenNoRequestsExist() throws Exception {
 
-        when(equipmentRequestService.getEquipmentRequestsByStatusType(1))
-                .thenReturn(List.of());
+		when(equipmentRequestService.getEquipmentRequestsByStatusType(1)).thenReturn(List.of());
 
-        mockMvc.perform(get("/EquipmentRequestServlet/1"))
-                .andExpect(status().isOk())
-                .andExpect(content().json("[]"));
+		mockMvc.perform(get("/EquipmentRequestServlet/1")).andExpect(status().isOk()).andExpect(content().json("[]"));
 
-        verify(equipmentRequestService).getEquipmentRequestsByStatusType(1);
-    }
+		verify(equipmentRequestService).getEquipmentRequestsByStatusType(1);
+	}
 
-    @Test
-    void updateEquipmentRequest_shouldReturnSuccessTrue() throws Exception {
+	@Test
+	void updateEquipmentRequest_shouldReturnSuccessTrue() throws Exception {
 
-        EquipmentRequestDTO request = new EquipmentRequestDTO();
+		EquipmentRequestDTO request = new EquipmentRequestDTO();
 
-        when(equipmentRequestService.updateEquipmentRequest(
-                eq(1), any(EquipmentRequestDTO.class)))
-                .thenReturn(true);
+		when(equipmentRequestService.updateEquipmentRequest(eq(1), any(EquipmentRequestDTO.class))).thenReturn(true);
 
-        mockMvc.perform(put("/EquipmentRequestServlet/1")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request)))
-                .andExpect(status().isOk())
-                .andExpect(content().json("{\"success\":true}"));
+		mockMvc.perform(put("/EquipmentRequestServlet/1").contentType(MediaType.APPLICATION_JSON)
+				.content(objectMapper.writeValueAsString(request))).andExpect(status().isOk())
+				.andExpect(content().json("{\"success\":true}"));
 
-        verify(equipmentRequestService).updateEquipmentRequest(
-                eq(1), any(EquipmentRequestDTO.class));
-    }
+		verify(equipmentRequestService).updateEquipmentRequest(eq(1), any(EquipmentRequestDTO.class));
+	}
 
-    @Test
-    void updateEquipmentRequest_shouldReturnSuccessFalse() throws Exception {
+	@Test
+	void updateEquipmentRequest_shouldReturnSuccessFalse() throws Exception {
 
-        EquipmentRequestDTO request = new EquipmentRequestDTO();
+		EquipmentRequestDTO request = new EquipmentRequestDTO();
 
-        when(equipmentRequestService.updateEquipmentRequest(
-                eq(1), any(EquipmentRequestDTO.class)))
-                .thenReturn(false);
+		when(equipmentRequestService.updateEquipmentRequest(eq(1), any(EquipmentRequestDTO.class))).thenReturn(false);
 
-        mockMvc.perform(put("/EquipmentRequestServlet/1")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request)))
-                .andExpect(status().isOk())
-                .andExpect(content().json("{\"success\":false}"));
-    }
-    @Test
-    void deleteEquipmentRequest_shouldReturnSuccessTrue() throws Exception {
+		mockMvc.perform(put("/EquipmentRequestServlet/1").contentType(MediaType.APPLICATION_JSON)
+				.content(objectMapper.writeValueAsString(request))).andExpect(status().isOk())
+				.andExpect(content().json("{\"success\":false}"));
+	}
 
-        when(equipmentRequestService.deleteEquipmentRequest(1))
-                .thenReturn(true);
+	@Test
+	void deleteEquipmentRequest_shouldReturnSuccessTrue() throws Exception {
 
-        mockMvc.perform(delete("/EquipmentRequestServlet/1"))
-                .andExpect(status().isOk())
-                .andExpect(content().json("{\"success\":true}"));
+		when(equipmentRequestService.deleteEquipmentRequest(1)).thenReturn(true);
 
-        verify(equipmentRequestService).deleteEquipmentRequest(1);
-    }
+		mockMvc.perform(delete("/EquipmentRequestServlet/1")).andExpect(status().isOk())
+				.andExpect(content().json("{\"success\":true}"));
 
-    @Test
-    void deleteEquipmentRequest_shouldReturnSuccessFalse() throws Exception {
+		verify(equipmentRequestService).deleteEquipmentRequest(1);
+	}
 
-        when(equipmentRequestService.deleteEquipmentRequest(1))
-                .thenReturn(false);
+	@Test
+	void deleteEquipmentRequest_shouldReturnSuccessFalse() throws Exception {
 
-        mockMvc.perform(delete("/EquipmentRequestServlet/1"))
-                .andExpect(status().isOk())
-                .andExpect(content().json("{\"success\":false}"));
-    }
+		when(equipmentRequestService.deleteEquipmentRequest(1)).thenReturn(false);
+
+		mockMvc.perform(delete("/EquipmentRequestServlet/1")).andExpect(status().isOk())
+				.andExpect(content().json("{\"success\":false}"));
+	}
 }

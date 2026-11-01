@@ -14,87 +14,84 @@ import com.schoolportal.entity.EquipmentAvailabilityType;
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class EquipmentAvailabilityTypeRepositoryTest {
 
-    @Autowired
-    private EquipmentAvailabilityTypeRepository repository;
+	@Autowired
+	private EquipmentAvailabilityTypeRepository repository;
 
-    @Test
-    void save_shouldPersistAvailabilityType() {
+	@Test
+	void save_shouldPersistAvailabilityType() {
 
-        EquipmentAvailabilityType type = new EquipmentAvailabilityType();
-        type.setAvailabilityStatus("Available");
-        type.setDescription("Equipment is available");
+		EquipmentAvailabilityType type = new EquipmentAvailabilityType();
+		type.setAvailabilityStatus("Available");
+		type.setDescription("Equipment is available");
 
-        EquipmentAvailabilityType saved = repository.save(type);
+		EquipmentAvailabilityType saved = repository.save(type);
 
-        assertThat(saved.getId()).isNotNull();
-        assertThat(saved.getAvailabilityStatus()).isEqualTo("Available");
-        assertThat(saved.getDescription()).isEqualTo("Equipment is available");
-    }
+		assertThat(saved.getId()).isNotNull();
+		assertThat(saved.getAvailabilityStatus()).isEqualTo("Available");
+		assertThat(saved.getDescription()).isEqualTo("Equipment is available");
+	}
 
-    @Test
-    void findById_shouldReturnAvailabilityType() {
+	@Test
+	void findById_shouldReturnAvailabilityType() {
 
-        EquipmentAvailabilityType type = new EquipmentAvailabilityType();
-        type.setAvailabilityStatus("Unavailable");
+		EquipmentAvailabilityType type = new EquipmentAvailabilityType();
+		type.setAvailabilityStatus("Unavailable");
 
-        EquipmentAvailabilityType saved = repository.save(type);
+		EquipmentAvailabilityType saved = repository.save(type);
 
-        Optional<EquipmentAvailabilityType> result =
-                repository.findById(saved.getId());
+		Optional<EquipmentAvailabilityType> result = repository.findById(saved.getId());
 
-        assertThat(result).isPresent();
-        assertThat(result.get().getAvailabilityStatus()).isEqualTo("Unavailable");
-    }
+		assertThat(result).isPresent();
+		assertThat(result.get().getAvailabilityStatus()).isEqualTo("Unavailable");
+	}
 
-    @Test
-    void findByAvailabilityStatusIgnoreCase_shouldFindMatchingStatus() {
+	@Test
+	void findByAvailabilityStatusIgnoreCase_shouldFindMatchingStatus() {
 
-        EquipmentAvailabilityType type = new EquipmentAvailabilityType();
-        type.setAvailabilityStatus("Available");
+		EquipmentAvailabilityType type = new EquipmentAvailabilityType();
+		type.setAvailabilityStatus("Available");
 
-        repository.save(type);
+		repository.save(type);
 
-        Optional<EquipmentAvailabilityType> result =
-                repository.findByAvailabilityStatusIgnoreCase("available");
+		Optional<EquipmentAvailabilityType> result = repository.findByAvailabilityStatusIgnoreCase("available");
 
-        assertThat(result).isPresent();
-        assertThat(result.get().getAvailabilityStatus()).isEqualTo("Available");
-    }
+		assertThat(result).isPresent();
+		assertThat(result.get().getAvailabilityStatus()).isEqualTo("Available");
+	}
 
-    @Test
-    void findByAvailabilityStatusIgnoreCase_shouldReturnEmptyWhenNotFound() {
+	@Test
+	void findByAvailabilityStatusIgnoreCase_shouldReturnEmptyWhenNotFound() {
 
-        Optional<EquipmentAvailabilityType> result =
-                repository.findByAvailabilityStatusIgnoreCase("Unknown");
+		Optional<EquipmentAvailabilityType> result = repository.findByAvailabilityStatusIgnoreCase("Unknown");
 
-        assertThat(result).isEmpty();
-    }
+		assertThat(result).isEmpty();
+	}
 
-    @Test
-    void findAll_shouldReturnAllAvailabilityTypes() {
+	@Test
+	void findAll_shouldReturnAllAvailabilityTypes() {
 
-        EquipmentAvailabilityType first = new EquipmentAvailabilityType();
-        first.setAvailabilityStatus("Available");
+		EquipmentAvailabilityType first = new EquipmentAvailabilityType();
+		first.setAvailabilityStatus("Available");
 
-        EquipmentAvailabilityType second = new EquipmentAvailabilityType();
-        second.setAvailabilityStatus("Unavailable");
+		EquipmentAvailabilityType second = new EquipmentAvailabilityType();
+		second.setAvailabilityStatus("Unavailable");
 
-        repository.save(first);
-        repository.save(second);
+		repository.save(first);
+		repository.save(second);
 
-        assertThat(repository.findAll()).hasSize(2);
-    }
+		assertThat(repository.findAll()).hasSize(2);
+	}
 
-    @Test
-    void delete_shouldRemoveAvailabilityType() {
+	@Test
+	void delete_shouldRemoveAvailabilityType() {
 
-        EquipmentAvailabilityType type = new EquipmentAvailabilityType();
-        type.setAvailabilityStatus("Available");
+		EquipmentAvailabilityType type = new EquipmentAvailabilityType();
+		type.setAvailabilityStatus("Available");
 
-        EquipmentAvailabilityType saved = repository.save(type);
+		EquipmentAvailabilityType saved = repository.save(type);
 
-        repository.deleteById(saved.getId());
+		repository.deleteById(saved.getId());
 
-        assertThat(repository.findById(saved.getId())).isEmpty();
-    }
+		assertThat(repository.findById(saved.getId())).isEmpty();
+	}
 }

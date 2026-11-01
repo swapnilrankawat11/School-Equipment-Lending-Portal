@@ -20,55 +20,46 @@ import com.schoolportal.service.EquipmentCategoryService;
 @RequestMapping("/EquipmentCategoryServlet")
 public class EquipmentCategoryController {
 
-    private final EquipmentCategoryService equipmentCategoryService;
+	private final EquipmentCategoryService equipmentCategoryService;
 
-    public EquipmentCategoryController(
-            EquipmentCategoryService equipmentCategoryService) {
-        this.equipmentCategoryService = equipmentCategoryService;
-    }
+	public EquipmentCategoryController(EquipmentCategoryService equipmentCategoryService) {
+		this.equipmentCategoryService = equipmentCategoryService;
+	}
 
-    // GET: Retrieve all categories
-    @GetMapping
-    public ResponseEntity<List<EquipmentCategoryDTO>> getAllEquipmentCategories() {
+	// GET: Retrieve all categories
+	@GetMapping
+	public ResponseEntity<List<EquipmentCategoryDTO>> getAllEquipmentCategories() {
 
-        List<EquipmentCategoryDTO> categories =
-                equipmentCategoryService.getAllEquipmentCategories();
+		List<EquipmentCategoryDTO> categories = equipmentCategoryService.getAllEquipmentCategories();
 
-        return ResponseEntity.ok(categories);
-    }
+		return ResponseEntity.ok(categories);
+	}
 
-    // POST: Add a new category
-    @PostMapping
-    public ResponseEntity<Map<String, Boolean>> addEquipmentCategory(
-            @RequestBody EquipmentCategoryDTO categoryDTO) {
+	// POST: Add a new category
+	@PostMapping
+	public ResponseEntity<Map<String, Boolean>> addEquipmentCategory(@RequestBody EquipmentCategoryDTO categoryDTO) {
 
-        boolean result =
-                equipmentCategoryService.addEquipmentCategory(categoryDTO);
+		boolean result = equipmentCategoryService.addEquipmentCategory(categoryDTO);
 
-        return ResponseEntity.ok(Map.of("success", result));
-    }
+		return ResponseEntity.ok(Map.of("success", result));
+	}
 
-    // PUT: Update an existing category
-    @PutMapping("/{categoryId}")
-    public ResponseEntity<Map<String, Boolean>> updateEquipmentCategory(
-            @PathVariable int categoryId,
-            @RequestBody EquipmentCategoryDTO categoryDTO) {
+	// PUT: Update an existing category
+	@PutMapping("/{categoryId}")
+	public ResponseEntity<Map<String, Boolean>> updateEquipmentCategory(@PathVariable int categoryId,
+			@RequestBody EquipmentCategoryDTO categoryDTO) {
 
-        boolean result =
-                equipmentCategoryService.updateEquipmentCategory(
-                        categoryId, categoryDTO);
+		boolean result = equipmentCategoryService.updateEquipmentCategory(categoryId, categoryDTO);
 
-        return ResponseEntity.ok(Map.of("success", result));
-    }
+		return ResponseEntity.ok(Map.of("success", result));
+	}
 
-    // DELETE: Delete a category
-    @DeleteMapping("/{categoryId}")
-    public ResponseEntity<Map<String, Boolean>> deleteEquipmentCategory(
-            @PathVariable int categoryId) {
+	// DELETE: Delete a category
+	@DeleteMapping("/{categoryId}")
+	public ResponseEntity<Map<String, Boolean>> deleteEquipmentCategory(@PathVariable int categoryId) {
 
-        boolean result =
-                equipmentCategoryService.deleteEquipmentCategory(categoryId);
+		boolean result = equipmentCategoryService.deleteEquipmentCategory(categoryId);
 
-        return ResponseEntity.ok(Map.of("success", result));
-    }
+		return ResponseEntity.ok(Map.of("success", result));
+	}
 }

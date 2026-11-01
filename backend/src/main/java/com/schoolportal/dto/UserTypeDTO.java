@@ -75,5 +75,5 @@ public class UserTypeDTO {
 		return "UserTypeDTO [id=" + id + ", createdBy=" + createdBy + ", modifiedBy=" + modifiedBy + ", userType="
 				+ userType + ", createdAt=" + createdAt + ", modifiedAt=" + modifiedAt + "]";
 	}
-	
+
 }

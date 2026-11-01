@@ -1,4 +1,5 @@
 package com.schoolportal.repository;
+
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -18,141 +19,133 @@ import com.schoolportal.entity.EquipmentCategory;
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class EquipmentRepositoryTest {
 
-    @Autowired
-    private EquipmentRepository repository;
+	@Autowired
+	private EquipmentRepository repository;
 
-    @Autowired
-    private EquipmentCategoryRepository categoryRepository;
+	@Autowired
+	private EquipmentCategoryRepository categoryRepository;
 
-    @Autowired
-    private EquipmentAvailabilityTypeRepository availabilityTypeRepository;
+	@Autowired
+	private EquipmentAvailabilityTypeRepository availabilityTypeRepository;
 
-    private Equipment createEquipment(String name, int totalQuantity, int quantityLeft) {
-        Equipment equipment = new Equipment();
-        equipment.setName(name);
-        equipment.setCategory(createCategory());
-        equipment.setAvailabilityType(createAvailabilityType());
-        equipment.setTotalQuantity(totalQuantity);
-        equipment.setQuantityLeft(quantityLeft);
+	private Equipment createEquipment(String name, int totalQuantity, int quantityLeft) {
+		Equipment equipment = new Equipment();
+		equipment.setName(name);
+		equipment.setCategory(createCategory());
+		equipment.setAvailabilityType(createAvailabilityType());
+		equipment.setTotalQuantity(totalQuantity);
+		equipment.setQuantityLeft(quantityLeft);
 
-        return equipment;
-    }
+		return equipment;
+	}
 
-    private EquipmentCategory createCategory() {
-        return categoryRepository.findAll()
-                .stream()
-                .filter(c -> c.getCategoryName().equals("Electronics"))
-                .findFirst()
-                .orElseGet(() -> {
-                    EquipmentCategory category = new EquipmentCategory();
-                    category.setCategoryName("Electronics");
-                    return categoryRepository.save(category);
-                });
-    }
+	private EquipmentCategory createCategory() {
+		return categoryRepository.findAll().stream().filter(c -> c.getCategoryName().equals("Electronics")).findFirst()
+				.orElseGet(() -> {
+					EquipmentCategory category = new EquipmentCategory();
+					category.setCategoryName("Electronics");
+					return categoryRepository.save(category);
+				});
+	}
 
-    private EquipmentAvailabilityType createAvailabilityType() {
-        return availabilityTypeRepository.findAll()
-                .stream()
-                .filter(a -> a.getAvailabilityStatus().equals("Available"))
-                .findFirst()
-                .orElseGet(() -> {
-                    EquipmentAvailabilityType availability = new EquipmentAvailabilityType();
-                    availability.setAvailabilityStatus("Available");
-                    return availabilityTypeRepository.save(availability);
-                });
-    }
-    
-    @Test
-    void save_shouldPersistEquipmentWithRelationships() {
-        Equipment equipment = createEquipment("Laptop", 10, 8);
+	private EquipmentAvailabilityType createAvailabilityType() {
+		return availabilityTypeRepository.findAll().stream().filter(a -> a.getAvailabilityStatus().equals("Available"))
+				.findFirst().orElseGet(() -> {
+					EquipmentAvailabilityType availability = new EquipmentAvailabilityType();
+					availability.setAvailabilityStatus("Available");
+					return availabilityTypeRepository.save(availability);
+				});
+	}
 
-        Equipment saved = repository.save(equipment);
+	@Test
+	void save_shouldPersistEquipmentWithRelationships() {
+		Equipment equipment = createEquipment("Laptop", 10, 8);
 
-        assertThat(saved.getId()).isNotNull();
-        assertThat(saved.getName()).isEqualTo("Laptop");
-        assertThat(saved.getTotalQuantity()).isEqualTo(10);
-        assertThat(saved.getQuantityLeft()).isEqualTo(8);
-        assertThat(saved.getCategory().getCategoryName()).isEqualTo("Electronics");
-        assertThat(saved.getAvailabilityType().getAvailabilityStatus()).isEqualTo("Available");
-    }
+		Equipment saved = repository.save(equipment);
 
-    @Test
-    void findById_shouldReturnEquipment() {
-        Equipment saved = repository.save(createEquipment("Laptop", 10, 8));
+		assertThat(saved.getId()).isNotNull();
+		assertThat(saved.getName()).isEqualTo("Laptop");
+		assertThat(saved.getTotalQuantity()).isEqualTo(10);
+		assertThat(saved.getQuantityLeft()).isEqualTo(8);
+		assertThat(saved.getCategory().getCategoryName()).isEqualTo("Electronics");
+		assertThat(saved.getAvailabilityType().getAvailabilityStatus()).isEqualTo("Available");
+	}
 
-        Optional<Equipment> result = repository.findById(saved.getId());
+	@Test
+	void findById_shouldReturnEquipment() {
+		Equipment saved = repository.save(createEquipment("Laptop", 10, 8));
 
-        assertThat(result).isPresent();
-        assertThat(result.get().getName()).isEqualTo("Laptop");
-    }
+		Optional<Equipment> result = repository.findById(saved.getId());
 
-    @Test
-    void findAll_shouldReturnAllEquipment() {
-        repository.save(createEquipment("Laptop", 10, 8));
-        repository.save(createEquipment("Projector", 5, 3));
+		assertThat(result).isPresent();
+		assertThat(result.get().getName()).isEqualTo("Laptop");
+	}
 
-        assertThat(repository.findAll()).hasSize(2);
-    }
+	@Test
+	void findAll_shouldReturnAllEquipment() {
+		repository.save(createEquipment("Laptop", 10, 8));
+		repository.save(createEquipment("Projector", 5, 3));
 
-    @Test
-    void findAllWithDetails_shouldReturnEquipmentWithCategoryAndAvailability() {
-        repository.save(createEquipment("Laptop", 10, 8));
-        repository.save(createEquipment("Projector", 5, 3));
+		assertThat(repository.findAll()).hasSize(2);
+	}
 
-        List<Equipment> result = repository.findAllWithDetails();
+	@Test
+	void findAllWithDetails_shouldReturnEquipmentWithCategoryAndAvailability() {
+		repository.save(createEquipment("Laptop", 10, 8));
+		repository.save(createEquipment("Projector", 5, 3));
 
-        assertThat(result).hasSize(2);
-        assertThat(result).extracting(Equipment::getName)
-                .containsExactly("Laptop", "Projector");
-        assertThat(result.get(0).getCategory().getCategoryName()).isEqualTo("Electronics");
-        assertThat(result.get(0).getAvailabilityType().getAvailabilityStatus()).isEqualTo("Available");
-    }
+		List<Equipment> result = repository.findAllWithDetails();
 
-    @Test
-    @Transactional
-    void updateEquipmentQuantityLeftById_shouldUpdateQuantity() {
-        Equipment saved = repository.save(createEquipment("Laptop", 10, 8));
+		assertThat(result).hasSize(2);
+		assertThat(result).extracting(Equipment::getName).containsExactly("Laptop", "Projector");
+		assertThat(result.get(0).getCategory().getCategoryName()).isEqualTo("Electronics");
+		assertThat(result.get(0).getAvailabilityType().getAvailabilityStatus()).isEqualTo("Available");
+	}
 
-        int rowsUpdated = repository.updateEquipmentQuantityLeftById(5, saved.getId());
+	@Test
+	@Transactional
+	void updateEquipmentQuantityLeftById_shouldUpdateQuantity() {
+		Equipment saved = repository.save(createEquipment("Laptop", 10, 8));
 
-        assertThat(rowsUpdated).isEqualTo(1);
-        assertThat(repository.findById(saved.getId()).get().getQuantityLeft()).isEqualTo(5);
-    }
+		int rowsUpdated = repository.updateEquipmentQuantityLeftById(5, saved.getId());
 
-    @Test
-    @Transactional
-    void updateEquipmentQuantityLeftById_shouldReturnZeroForUnknownId() {
-        int rowsUpdated = repository.updateEquipmentQuantityLeftById(5, 999);
+		assertThat(rowsUpdated).isEqualTo(1);
+		assertThat(repository.findById(saved.getId()).get().getQuantityLeft()).isEqualTo(5);
+	}
 
-        assertThat(rowsUpdated).isZero();
-    }
+	@Test
+	@Transactional
+	void updateEquipmentQuantityLeftById_shouldReturnZeroForUnknownId() {
+		int rowsUpdated = repository.updateEquipmentQuantityLeftById(5, 999);
 
-    @Test
-    @Transactional
-    void updateAvailabilityStatusById_shouldUpdateAvailability() {
-        Equipment saved = repository.save(createEquipment("Laptop", 10, 8));
+		assertThat(rowsUpdated).isZero();
+	}
 
-        EquipmentAvailabilityType unavailable = new EquipmentAvailabilityType();
-        unavailable.setAvailabilityStatus("Unavailable");
-        unavailable = availabilityTypeRepository.save(unavailable);
+	@Test
+	@Transactional
+	void updateAvailabilityStatusById_shouldUpdateAvailability() {
+		Equipment saved = repository.save(createEquipment("Laptop", 10, 8));
 
-        int rowsUpdated = repository.updateAvailabilityStatusById(
-                unavailable.getId(), saved.getId());
+		EquipmentAvailabilityType unavailable = new EquipmentAvailabilityType();
+		unavailable.setAvailabilityStatus("Unavailable");
+		unavailable = availabilityTypeRepository.save(unavailable);
 
-        assertThat(rowsUpdated).isEqualTo(1);
+		int rowsUpdated = repository.updateAvailabilityStatusById(unavailable.getId(), saved.getId());
 
-        repository.flush();
+		assertThat(rowsUpdated).isEqualTo(1);
 
-        assertThat(repository.findById(saved.getId()).get()
-                .getAvailabilityType().getAvailabilityStatus()).isEqualTo("Unavailable");
-    }
+		repository.flush();
 
-    @Test
-    void delete_shouldRemoveEquipment() {
-        Equipment saved = repository.save(createEquipment("Laptop", 10, 8));
+		assertThat(repository.findById(saved.getId()).get().getAvailabilityType().getAvailabilityStatus())
+				.isEqualTo("Unavailable");
+	}
 
-        repository.deleteById(saved.getId());
+	@Test
+	void delete_shouldRemoveEquipment() {
+		Equipment saved = repository.save(createEquipment("Laptop", 10, 8));
 
-        assertThat(repository.findById(saved.getId())).isEmpty();
-    }
+		repository.deleteById(saved.getId());
+
+		assertThat(repository.findById(saved.getId())).isEmpty();
+	}
 }

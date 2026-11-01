@@ -20,54 +20,51 @@ import com.schoolportal.repository.EquipmentAvailabilityTypeRepository;
 @ExtendWith(MockitoExtension.class)
 class EquipmentAvailabilityTypeServiceTest {
 
-    @Mock
-    private EquipmentAvailabilityTypeRepository repository;
+	@Mock
+	private EquipmentAvailabilityTypeRepository repository;
 
-    @InjectMocks
-    private EquipmentAvailabilityTypeService availabilityTypeService;
+	@InjectMocks
+	private EquipmentAvailabilityTypeService availabilityTypeService;
 
-    private EquipmentAvailabilityType availabilityType;
+	private EquipmentAvailabilityType availabilityType;
 
-    @BeforeEach
-    void setUp() {
+	@BeforeEach
+	void setUp() {
 
-        availabilityType = new EquipmentAvailabilityType();
+		availabilityType = new EquipmentAvailabilityType();
 
-        availabilityType.setId(1);
-        availabilityType.setAvailabilityStatus("Available");
-        availabilityType.setDescription("Equipment is available");
-        availabilityType.setCreatedBy(10);
-        availabilityType.setModifiedBy(10);
-    }
+		availabilityType.setId(1);
+		availabilityType.setAvailabilityStatus("Available");
+		availabilityType.setDescription("Equipment is available");
+		availabilityType.setCreatedBy(10);
+		availabilityType.setModifiedBy(10);
+	}
 
-    @Test
-    void getAllEquipmentAvailabilityTypes_shouldReturnMappedDTOs() {
+	@Test
+	void getAllEquipmentAvailabilityTypes_shouldReturnMappedDTOs() {
 
-        when(repository.findAll())
-                .thenReturn(List.of(availabilityType));
+		when(repository.findAll()).thenReturn(List.of(availabilityType));
 
-        List<EquipmentAvailabilityTypeDTO> result =
-                availabilityTypeService.getAllEquipmentAvailabilityTypes();
+		List<EquipmentAvailabilityTypeDTO> result = availabilityTypeService.getAllEquipmentAvailabilityTypes();
 
-        assertEquals(1, result.size());
+		assertEquals(1, result.size());
 
-        EquipmentAvailabilityTypeDTO dto = result.get(0);
+		EquipmentAvailabilityTypeDTO dto = result.get(0);
 
-        assertEquals(1, dto.getId());
-        assertEquals("Available", dto.getAvailabilityStatus());
-        assertEquals("Equipment is available", dto.getDescription());
-        assertEquals(10, dto.getCreatedBy());
-        assertEquals(10, dto.getModifiedBy());
-    }
+		assertEquals(1, dto.getId());
+		assertEquals("Available", dto.getAvailabilityStatus());
+		assertEquals("Equipment is available", dto.getDescription());
+		assertEquals(10, dto.getCreatedBy());
+		assertEquals(10, dto.getModifiedBy());
+	}
 
-    @Test
-    void getAllEquipmentAvailabilityTypes_emptyList_shouldReturnEmptyList() {
+	@Test
+	void getAllEquipmentAvailabilityTypes_emptyList_shouldReturnEmptyList() {
 
-        when(repository.findAll()).thenReturn(List.of());
+		when(repository.findAll()).thenReturn(List.of());
 
-        List<EquipmentAvailabilityTypeDTO> result =
-                availabilityTypeService.getAllEquipmentAvailabilityTypes();
+		List<EquipmentAvailabilityTypeDTO> result = availabilityTypeService.getAllEquipmentAvailabilityTypes();
 
-        assertTrue(result.isEmpty());
-    }
+		assertTrue(result.isEmpty());
+	}
 }

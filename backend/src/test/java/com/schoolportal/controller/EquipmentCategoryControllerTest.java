@@ -28,128 +28,110 @@ import com.schoolportal.service.EquipmentCategoryService;
 @AutoConfigureMockMvc(addFilters = false)
 class EquipmentCategoryControllerTest {
 
-    @Autowired
-    private MockMvc mockMvc;
+	@Autowired
+	private MockMvc mockMvc;
 
-    @Autowired
-    private ObjectMapper objectMapper;
+	@Autowired
+	private ObjectMapper objectMapper;
 
-    @MockitoBean
-    private EquipmentCategoryService equipmentCategoryService;
+	@MockitoBean
+	private EquipmentCategoryService equipmentCategoryService;
 
-    @Test
-    void getAllEquipmentCategories_shouldReturnCategories() throws Exception {
+	@Test
+	void getAllEquipmentCategories_shouldReturnCategories() throws Exception {
 
-        List<EquipmentCategoryDTO> categories = List.of(
-                new EquipmentCategoryDTO(1, "Electronics"),
-                new EquipmentCategoryDTO(2, "Furniture"));
+		List<EquipmentCategoryDTO> categories = List.of(new EquipmentCategoryDTO(1, "Electronics"),
+				new EquipmentCategoryDTO(2, "Furniture"));
 
-        when(equipmentCategoryService.getAllEquipmentCategories()).thenReturn(categories);
+		when(equipmentCategoryService.getAllEquipmentCategories()).thenReturn(categories);
 
-        mockMvc.perform(get("/EquipmentCategoryServlet"))
-                .andExpect(status().isOk())
-                .andExpect(content().json(objectMapper.writeValueAsString(categories)));
+		mockMvc.perform(get("/EquipmentCategoryServlet")).andExpect(status().isOk())
+				.andExpect(content().json(objectMapper.writeValueAsString(categories)));
 
-        verify(equipmentCategoryService).getAllEquipmentCategories();
-    }
+		verify(equipmentCategoryService).getAllEquipmentCategories();
+	}
 
-    @Test
-    void getAllEquipmentCategories_shouldReturnEmptyList() throws Exception {
+	@Test
+	void getAllEquipmentCategories_shouldReturnEmptyList() throws Exception {
 
-        when(equipmentCategoryService.getAllEquipmentCategories()).thenReturn(List.of());
+		when(equipmentCategoryService.getAllEquipmentCategories()).thenReturn(List.of());
 
-        mockMvc.perform(get("/EquipmentCategoryServlet"))
-                .andExpect(status().isOk())
-                .andExpect(content().json("[]"));
+		mockMvc.perform(get("/EquipmentCategoryServlet")).andExpect(status().isOk()).andExpect(content().json("[]"));
 
-        verify(equipmentCategoryService).getAllEquipmentCategories();
-    }
+		verify(equipmentCategoryService).getAllEquipmentCategories();
+	}
 
-    @Test
-    void addEquipmentCategory_shouldReturnSuccessTrue() throws Exception {
+	@Test
+	void addEquipmentCategory_shouldReturnSuccessTrue() throws Exception {
 
-        EquipmentCategoryDTO category = new EquipmentCategoryDTO(1, "Electronics");
+		EquipmentCategoryDTO category = new EquipmentCategoryDTO(1, "Electronics");
 
-        when(equipmentCategoryService.addEquipmentCategory(any(EquipmentCategoryDTO.class)))
-                .thenReturn(true);
+		when(equipmentCategoryService.addEquipmentCategory(any(EquipmentCategoryDTO.class))).thenReturn(true);
 
-        mockMvc.perform(post("/EquipmentCategoryServlet")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(category)))
-                .andExpect(status().isOk())
-                .andExpect(content().json("{\"success\":true}"));
+		mockMvc.perform(post("/EquipmentCategoryServlet").contentType(MediaType.APPLICATION_JSON)
+				.content(objectMapper.writeValueAsString(category))).andExpect(status().isOk())
+				.andExpect(content().json("{\"success\":true}"));
 
-        verify(equipmentCategoryService).addEquipmentCategory(any(EquipmentCategoryDTO.class));
-    }
+		verify(equipmentCategoryService).addEquipmentCategory(any(EquipmentCategoryDTO.class));
+	}
 
-    @Test
-    void addEquipmentCategory_shouldReturnSuccessFalse() throws Exception {
+	@Test
+	void addEquipmentCategory_shouldReturnSuccessFalse() throws Exception {
 
-        EquipmentCategoryDTO category = new EquipmentCategoryDTO(1, "Electronics");
+		EquipmentCategoryDTO category = new EquipmentCategoryDTO(1, "Electronics");
 
-        when(equipmentCategoryService.addEquipmentCategory(any(EquipmentCategoryDTO.class)))
-                .thenReturn(false);
+		when(equipmentCategoryService.addEquipmentCategory(any(EquipmentCategoryDTO.class))).thenReturn(false);
 
-        mockMvc.perform(post("/EquipmentCategoryServlet")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(category)))
-                .andExpect(status().isOk())
-                .andExpect(content().json("{\"success\":false}"));
-    }
+		mockMvc.perform(post("/EquipmentCategoryServlet").contentType(MediaType.APPLICATION_JSON)
+				.content(objectMapper.writeValueAsString(category))).andExpect(status().isOk())
+				.andExpect(content().json("{\"success\":false}"));
+	}
 
-    @Test
-    void updateEquipmentCategory_shouldReturnSuccessTrue() throws Exception {
+	@Test
+	void updateEquipmentCategory_shouldReturnSuccessTrue() throws Exception {
 
-        EquipmentCategoryDTO category = new EquipmentCategoryDTO(1, "Electronics");
+		EquipmentCategoryDTO category = new EquipmentCategoryDTO(1, "Electronics");
 
-        when(equipmentCategoryService.updateEquipmentCategory(
-                org.mockito.ArgumentMatchers.eq(1),
-                any(EquipmentCategoryDTO.class))).thenReturn(true);
+		when(equipmentCategoryService.updateEquipmentCategory(org.mockito.ArgumentMatchers.eq(1),
+				any(EquipmentCategoryDTO.class))).thenReturn(true);
 
-        mockMvc.perform(put("/EquipmentCategoryServlet/1")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(category)))
-                .andExpect(status().isOk())
-                .andExpect(content().json("{\"success\":true}"));
+		mockMvc.perform(put("/EquipmentCategoryServlet/1").contentType(MediaType.APPLICATION_JSON)
+				.content(objectMapper.writeValueAsString(category))).andExpect(status().isOk())
+				.andExpect(content().json("{\"success\":true}"));
 
-        verify(equipmentCategoryService).updateEquipmentCategory(
-                org.mockito.ArgumentMatchers.eq(1),
-                any(EquipmentCategoryDTO.class));
-    }
+		verify(equipmentCategoryService).updateEquipmentCategory(org.mockito.ArgumentMatchers.eq(1),
+				any(EquipmentCategoryDTO.class));
+	}
 
-    @Test
-    void updateEquipmentCategory_shouldReturnSuccessFalse() throws Exception {
+	@Test
+	void updateEquipmentCategory_shouldReturnSuccessFalse() throws Exception {
 
-        EquipmentCategoryDTO category = new EquipmentCategoryDTO(1, "Electronics");
+		EquipmentCategoryDTO category = new EquipmentCategoryDTO(1, "Electronics");
 
-        when(equipmentCategoryService.updateEquipmentCategory(1, category)).thenReturn(false);
+		when(equipmentCategoryService.updateEquipmentCategory(1, category)).thenReturn(false);
 
-        mockMvc.perform(put("/EquipmentCategoryServlet/1")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(category)))
-                .andExpect(status().isOk())
-                .andExpect(content().json("{\"success\":false}"));
-    }
+		mockMvc.perform(put("/EquipmentCategoryServlet/1").contentType(MediaType.APPLICATION_JSON)
+				.content(objectMapper.writeValueAsString(category))).andExpect(status().isOk())
+				.andExpect(content().json("{\"success\":false}"));
+	}
 
-    @Test
-    void deleteEquipmentCategory_shouldReturnSuccessTrue() throws Exception {
+	@Test
+	void deleteEquipmentCategory_shouldReturnSuccessTrue() throws Exception {
 
-        when(equipmentCategoryService.deleteEquipmentCategory(1)).thenReturn(true);
+		when(equipmentCategoryService.deleteEquipmentCategory(1)).thenReturn(true);
 
-        mockMvc.perform(delete("/EquipmentCategoryServlet/1"))
-                .andExpect(status().isOk())
-                .andExpect(content().json("{\"success\":true}"));
+		mockMvc.perform(delete("/EquipmentCategoryServlet/1")).andExpect(status().isOk())
+				.andExpect(content().json("{\"success\":true}"));
 
-        verify(equipmentCategoryService).deleteEquipmentCategory(1);
-    }
+		verify(equipmentCategoryService).deleteEquipmentCategory(1);
+	}
 
-    @Test
-    void deleteEquipmentCategory_shouldReturnSuccessFalse() throws Exception {
+	@Test
+	void deleteEquipmentCategory_shouldReturnSuccessFalse() throws Exception {
 
-        when(equipmentCategoryService.deleteEquipmentCategory(1)).thenReturn(false);
+		when(equipmentCategoryService.deleteEquipmentCategory(1)).thenReturn(false);
 
-        mockMvc.perform(delete("/EquipmentCategoryServlet/1"))
-                .andExpect(status().isOk())
-                .andExpect(content().json("{\"success\":false}"));
-    }
+		mockMvc.perform(delete("/EquipmentCategoryServlet/1")).andExpect(status().isOk())
+				.andExpect(content().json("{\"success\":false}"));
+	}
 }

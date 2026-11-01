@@ -25,580 +25,466 @@ import com.schoolportal.repository.EquipmentRepository;
 @ExtendWith(MockitoExtension.class)
 class EquipmentServiceTest {
 
-    @Mock
-    private EquipmentRepository equipmentRepository;
-
-    @Mock
-    private EquipmentAvailabilityTypeRepository availabilityRepository;
-
-    @Mock
-    private EquipmentCategoryRepository categoryRepository;
-
-    @InjectMocks
-    private EquipmentService equipmentService;
-
-    private EquipmentCategory category;
-    private EquipmentAvailabilityType available;
-    private EquipmentAvailabilityType lentOut;
-    private EquipmentAvailabilityType damaged;
-
-    @BeforeEach
-    void setUp() {
-
-        category = new EquipmentCategory();
-        category.setId(1);
-        category.setCategoryName("Electronics");
-
-        available = new EquipmentAvailabilityType();
-        available.setId(1);
-        available.setAvailabilityStatus("Available");
+	@Mock
+	private EquipmentRepository equipmentRepository;
 
-        lentOut = new EquipmentAvailabilityType();
-        lentOut.setId(2);
-        lentOut.setAvailabilityStatus("Lent Out");
+	@Mock
+	private EquipmentAvailabilityTypeRepository availabilityRepository;
 
-        damaged = new EquipmentAvailabilityType();
-        damaged.setId(3);
-        damaged.setAvailabilityStatus("Damaged");
-    }
+	@Mock
+	private EquipmentCategoryRepository categoryRepository;
 
-    // Helper method to create an equipment DTO
-    private EquipmentDTO createDTO(
-            int categoryId,
-            int availabilityId,
-            int totalQuantity,
-            Integer quantityLeft) {
+	@InjectMocks
+	private EquipmentService equipmentService;
 
-        EquipmentDTO dto = new EquipmentDTO();
+	private EquipmentCategory category;
+	private EquipmentAvailabilityType available;
+	private EquipmentAvailabilityType lentOut;
+	private EquipmentAvailabilityType damaged;
 
-        dto.setName("Laptop");
-        dto.setCategoryId(categoryId);
-        dto.setAvailabilityId(availabilityId);
-        dto.setTotalQuantity(totalQuantity);
-        dto.setQuantityLeft(quantityLeft);
-        dto.setDescription("Dell Laptop");
-        dto.setCreatedBy(1);
-        dto.setModifiedBy(1);
+	@BeforeEach
+	void setUp() {
 
-        return dto;
-    }
+		category = new EquipmentCategory();
+		category.setId(1);
+		category.setCategoryName("Electronics");
 
-    // Helper method to create an equipment entity
-    private Equipment createEquipment(
-            int totalQuantity,
-            Integer quantityLeft) {
+		available = new EquipmentAvailabilityType();
+		available.setId(1);
+		available.setAvailabilityStatus("Available");
 
-        Equipment equipment = new Equipment();
+		lentOut = new EquipmentAvailabilityType();
+		lentOut.setId(2);
+		lentOut.setAvailabilityStatus("Lent Out");
 
-        equipment.setId(10);
-        equipment.setName("Laptop");
-        equipment.setCategory(category);
-        equipment.setAvailabilityType(available);
-        equipment.setTotalQuantity(totalQuantity);
-        equipment.setQuantityLeft(quantityLeft);
-        equipment.setDescription("Dell Laptop");
-        equipment.setCreatedBy(1);
-        equipment.setModifiedBy(1);
+		damaged = new EquipmentAvailabilityType();
+		damaged.setId(3);
+		damaged.setAvailabilityStatus("Damaged");
+	}
 
-        return equipment;
-    }
+	// Helper method to create an equipment DTO
+	private EquipmentDTO createDTO(int categoryId, int availabilityId, int totalQuantity, Integer quantityLeft) {
 
-    // ==========================================
-    // GET ALL EQUIPMENTS
-    // ==========================================
+		EquipmentDTO dto = new EquipmentDTO();
 
-    @Test
-    void getAllEquipments_shouldReturnEquipmentList() {
+		dto.setName("Laptop");
+		dto.setCategoryId(categoryId);
+		dto.setAvailabilityId(availabilityId);
+		dto.setTotalQuantity(totalQuantity);
+		dto.setQuantityLeft(quantityLeft);
+		dto.setDescription("Dell Laptop");
+		dto.setCreatedBy(1);
+		dto.setModifiedBy(1);
 
-        Equipment equipment = createEquipment(10, 8);
+		return dto;
+	}
 
-        when(equipmentRepository.findAllWithDetails())
-                .thenReturn(List.of(equipment));
+	// Helper method to create an equipment entity
+	private Equipment createEquipment(int totalQuantity, Integer quantityLeft) {
 
-        List<EquipmentDTO> result =
-                equipmentService.getAllEquipments();
+		Equipment equipment = new Equipment();
 
-        assertEquals(1, result.size());
-        assertEquals("Laptop", result.get(0).getName());
-        assertEquals(1, result.get(0).getCategoryId());
-        assertEquals("Electronics", result.get(0).getCategoryName());
-        assertEquals(1, result.get(0).getAvailabilityId());
-        assertEquals("Available", result.get(0).getAvailabilityStatus());
-        assertEquals(10, result.get(0).getTotalQuantity());
-        assertEquals(8, result.get(0).getQuantityLeft());
+		equipment.setId(10);
+		equipment.setName("Laptop");
+		equipment.setCategory(category);
+		equipment.setAvailabilityType(available);
+		equipment.setTotalQuantity(totalQuantity);
+		equipment.setQuantityLeft(quantityLeft);
+		equipment.setDescription("Dell Laptop");
+		equipment.setCreatedBy(1);
+		equipment.setModifiedBy(1);
 
-        verify(equipmentRepository).findAllWithDetails();
-    }
+		return equipment;
+	}
 
-    @Test
-    void getAllEquipments_whenNoEquipment_shouldReturnEmptyList() {
+	// ==========================================
+	// GET ALL EQUIPMENTS
+	// ==========================================
 
-        when(equipmentRepository.findAllWithDetails())
-                .thenReturn(List.of());
+	@Test
+	void getAllEquipments_shouldReturnEquipmentList() {
 
-        List<EquipmentDTO> result =
-                equipmentService.getAllEquipments();
+		Equipment equipment = createEquipment(10, 8);
 
-        assertTrue(result.isEmpty());
-    }
+		when(equipmentRepository.findAllWithDetails()).thenReturn(List.of(equipment));
 
-    // ==========================================
-    // ADD EQUIPMENT
-    // ==========================================
+		List<EquipmentDTO> result = equipmentService.getAllEquipments();
 
-    @Test
-    void addEquipment_withValidData_shouldSaveEquipment() {
+		assertEquals(1, result.size());
+		assertEquals("Laptop", result.get(0).getName());
+		assertEquals(1, result.get(0).getCategoryId());
+		assertEquals("Electronics", result.get(0).getCategoryName());
+		assertEquals(1, result.get(0).getAvailabilityId());
+		assertEquals("Available", result.get(0).getAvailabilityStatus());
+		assertEquals(10, result.get(0).getTotalQuantity());
+		assertEquals(8, result.get(0).getQuantityLeft());
 
-        EquipmentDTO dto = createDTO(1, 1, 10, 10);
+		verify(equipmentRepository).findAllWithDetails();
+	}
 
-        when(categoryRepository.findById(1))
-                .thenReturn(Optional.of(category));
+	@Test
+	void getAllEquipments_whenNoEquipment_shouldReturnEmptyList() {
 
-        when(availabilityRepository.findById(1))
-                .thenReturn(Optional.of(available));
+		when(equipmentRepository.findAllWithDetails()).thenReturn(List.of());
 
-        boolean result = equipmentService.addEquipment(dto);
+		List<EquipmentDTO> result = equipmentService.getAllEquipments();
 
-        assertTrue(result);
+		assertTrue(result.isEmpty());
+	}
 
-        verify(equipmentRepository).save(argThat(equipment ->
-                equipment.getName().equals("Laptop")
-                && equipment.getTotalQuantity() == 10
-                && equipment.getQuantityLeft() == 10
-                && equipment.getCategory() == category
-                && equipment.getAvailabilityType() == available
-        ));
-    }
+	// ==========================================
+	// ADD EQUIPMENT
+	// ==========================================
 
-    @Test
-    void addEquipment_withInvalidCategory_shouldThrowException() {
+	@Test
+	void addEquipment_withValidData_shouldSaveEquipment() {
 
-        EquipmentDTO dto = createDTO(99, 1, 10, 10);
+		EquipmentDTO dto = createDTO(1, 1, 10, 10);
 
-        when(categoryRepository.findById(99))
-                .thenReturn(Optional.empty());
+		when(categoryRepository.findById(1)).thenReturn(Optional.of(category));
 
-        RuntimeException exception = assertThrows(
-                RuntimeException.class,
-                () -> equipmentService.addEquipment(dto)
-        );
+		when(availabilityRepository.findById(1)).thenReturn(Optional.of(available));
 
-        assertEquals("Invalid equipment category.", exception.getMessage());
+		boolean result = equipmentService.addEquipment(dto);
 
-        verify(equipmentRepository, never()).save(any());
-    }
+		assertTrue(result);
 
-    @Test
-    void addEquipment_withInvalidAvailability_shouldThrowException() {
+		verify(equipmentRepository).save(argThat(equipment -> equipment.getName().equals("Laptop")
+				&& equipment.getTotalQuantity() == 10 && equipment.getQuantityLeft() == 10
+				&& equipment.getCategory() == category && equipment.getAvailabilityType() == available));
+	}
 
-        EquipmentDTO dto = createDTO(1, 99, 10, 10);
+	@Test
+	void addEquipment_withInvalidCategory_shouldThrowException() {
 
-        when(categoryRepository.findById(1))
-                .thenReturn(Optional.of(category));
+		EquipmentDTO dto = createDTO(99, 1, 10, 10);
 
-        when(availabilityRepository.findById(99))
-                .thenReturn(Optional.empty());
+		when(categoryRepository.findById(99)).thenReturn(Optional.empty());
 
-        RuntimeException exception = assertThrows(
-                RuntimeException.class,
-                () -> equipmentService.addEquipment(dto)
-        );
+		RuntimeException exception = assertThrows(RuntimeException.class, () -> equipmentService.addEquipment(dto));
 
-        assertEquals("Invalid availability status.", exception.getMessage());
+		assertEquals("Invalid equipment category.", exception.getMessage());
 
-        verify(equipmentRepository, never()).save(any());
-    }
+		verify(equipmentRepository, never()).save(any());
+	}
 
-    @Test
-    void addEquipment_withNegativeQuantity_shouldThrowException() {
+	@Test
+	void addEquipment_withInvalidAvailability_shouldThrowException() {
 
-        EquipmentDTO dto = createDTO(1, 1, -5, -5);
+		EquipmentDTO dto = createDTO(1, 99, 10, 10);
 
-        when(categoryRepository.findById(1))
-                .thenReturn(Optional.of(category));
+		when(categoryRepository.findById(1)).thenReturn(Optional.of(category));
 
-        when(availabilityRepository.findById(1))
-                .thenReturn(Optional.of(available));
+		when(availabilityRepository.findById(99)).thenReturn(Optional.empty());
 
-        RuntimeException exception = assertThrows(
-                RuntimeException.class,
-                () -> equipmentService.addEquipment(dto)
-        );
+		RuntimeException exception = assertThrows(RuntimeException.class, () -> equipmentService.addEquipment(dto));
 
-        assertEquals(
-                "Total quantity cannot be negative.",
-                exception.getMessage()
-        );
+		assertEquals("Invalid availability status.", exception.getMessage());
 
-        verify(equipmentRepository, never()).save(any());
-    }
+		verify(equipmentRepository, never()).save(any());
+	}
 
-    @Test
-    void addEquipment_withMismatchedQuantityLeft_shouldThrowException() {
+	@Test
+	void addEquipment_withNegativeQuantity_shouldThrowException() {
 
-        EquipmentDTO dto = createDTO(1, 1, 10, 5);
+		EquipmentDTO dto = createDTO(1, 1, -5, -5);
 
-        when(categoryRepository.findById(1))
-                .thenReturn(Optional.of(category));
+		when(categoryRepository.findById(1)).thenReturn(Optional.of(category));
 
-        when(availabilityRepository.findById(1))
-                .thenReturn(Optional.of(available));
+		when(availabilityRepository.findById(1)).thenReturn(Optional.of(available));
 
-        RuntimeException exception = assertThrows(
-                RuntimeException.class,
-                () -> equipmentService.addEquipment(dto)
-        );
+		RuntimeException exception = assertThrows(RuntimeException.class, () -> equipmentService.addEquipment(dto));
 
-        assertEquals(
-                "New equipment quantity left must equal total quantity.",
-                exception.getMessage()
-        );
+		assertEquals("Total quantity cannot be negative.", exception.getMessage());
 
-        verify(equipmentRepository, never()).save(any());
-    }
+		verify(equipmentRepository, never()).save(any());
+	}
 
-    // ==========================================
-    // UPDATE EQUIPMENT
-    // ==========================================
+	@Test
+	void addEquipment_withMismatchedQuantityLeft_shouldThrowException() {
 
-    @Test
-    void updateEquipment_withValidData_shouldUpdateEquipment() {
+		EquipmentDTO dto = createDTO(1, 1, 10, 5);
 
-        Equipment existing = createEquipment(10, 7);
+		when(categoryRepository.findById(1)).thenReturn(Optional.of(category));
 
-        EquipmentDTO dto = createDTO(1, 1, 12, 12);
+		when(availabilityRepository.findById(1)).thenReturn(Optional.of(available));
 
-        when(equipmentRepository.findById(10))
-                .thenReturn(Optional.of(existing));
+		RuntimeException exception = assertThrows(RuntimeException.class, () -> equipmentService.addEquipment(dto));
 
-        when(availabilityRepository.findById(1))
-                .thenReturn(Optional.of(available));
+		assertEquals("New equipment quantity left must equal total quantity.", exception.getMessage());
 
-        when(categoryRepository.findById(1))
-                .thenReturn(Optional.of(category));
+		verify(equipmentRepository, never()).save(any());
+	}
 
-        boolean result = equipmentService.updateEquipment(10, dto);
+	// ==========================================
+	// UPDATE EQUIPMENT
+	// ==========================================
 
-        assertTrue(result);
+	@Test
+	void updateEquipment_withValidData_shouldUpdateEquipment() {
 
-        // 3 items issued, total increased to 12.
-        // Remaining stock should therefore be 9.
-        assertEquals(12, existing.getTotalQuantity());
-        assertEquals(9, existing.getQuantityLeft());
-        assertEquals("Laptop", existing.getName());
+		Equipment existing = createEquipment(10, 7);
 
-        verify(equipmentRepository).save(existing);
-    }
+		EquipmentDTO dto = createDTO(1, 1, 12, 12);
 
-    @Test
-    void updateEquipment_withInvalidId_shouldThrowException() {
+		when(equipmentRepository.findById(10)).thenReturn(Optional.of(existing));
 
-        EquipmentDTO dto = createDTO(1, 1, 10, 10);
+		when(availabilityRepository.findById(1)).thenReturn(Optional.of(available));
 
-        when(equipmentRepository.findById(99))
-                .thenReturn(Optional.empty());
+		when(categoryRepository.findById(1)).thenReturn(Optional.of(category));
 
-        RuntimeException exception = assertThrows(
-                RuntimeException.class,
-                () -> equipmentService.updateEquipment(99, dto)
-        );
+		boolean result = equipmentService.updateEquipment(10, dto);
 
-        assertEquals(
-                "Equipment not found with ID = 99",
-                exception.getMessage()
-        );
+		assertTrue(result);
 
-        verify(equipmentRepository, never()).save(any());
-    }
+		// 3 items issued, total increased to 12.
+		// Remaining stock should therefore be 9.
+		assertEquals(12, existing.getTotalQuantity());
+		assertEquals(9, existing.getQuantityLeft());
+		assertEquals("Laptop", existing.getName());
 
-    @Test
-    void updateEquipment_withNullStock_shouldThrowException() {
+		verify(equipmentRepository).save(existing);
+	}
 
-        Equipment existing = createEquipment(10, null);
+	@Test
+	void updateEquipment_withInvalidId_shouldThrowException() {
 
-        EquipmentDTO dto = createDTO(1, 1, 10, 10);
+		EquipmentDTO dto = createDTO(1, 1, 10, 10);
 
-        when(equipmentRepository.findById(10))
-                .thenReturn(Optional.of(existing));
+		when(equipmentRepository.findById(99)).thenReturn(Optional.empty());
 
-        RuntimeException exception = assertThrows(
-                RuntimeException.class,
-                () -> equipmentService.updateEquipment(10, dto)
-        );
+		RuntimeException exception = assertThrows(RuntimeException.class,
+				() -> equipmentService.updateEquipment(99, dto));
 
-        assertEquals(
-                "Equipment stock quantity is not configured.",
-                exception.getMessage()
-        );
+		assertEquals("Equipment not found with ID = 99", exception.getMessage());
 
-        verify(equipmentRepository, never()).save(any());
-    }
+		verify(equipmentRepository, never()).save(any());
+	}
 
-    @Test
-    void updateEquipment_withNegativeQuantity_shouldThrowException() {
+	@Test
+	void updateEquipment_withNullStock_shouldThrowException() {
 
-        Equipment existing = createEquipment(10, 8);
+		Equipment existing = createEquipment(10, null);
 
-        EquipmentDTO dto = createDTO(1, 1, -1, -1);
+		EquipmentDTO dto = createDTO(1, 1, 10, 10);
 
-        when(equipmentRepository.findById(10))
-                .thenReturn(Optional.of(existing));
+		when(equipmentRepository.findById(10)).thenReturn(Optional.of(existing));
 
-        RuntimeException exception = assertThrows(
-                RuntimeException.class,
-                () -> equipmentService.updateEquipment(10, dto)
-        );
+		RuntimeException exception = assertThrows(RuntimeException.class,
+				() -> equipmentService.updateEquipment(10, dto));
 
-        assertEquals(
-                "Total quantity cannot be negative.",
-                exception.getMessage()
-        );
+		assertEquals("Equipment stock quantity is not configured.", exception.getMessage());
 
-        verify(equipmentRepository, never()).save(any());
-    }
+		verify(equipmentRepository, never()).save(any());
+	}
 
-    @Test
-    void updateEquipment_belowIssuedQuantity_shouldThrowException() {
+	@Test
+	void updateEquipment_withNegativeQuantity_shouldThrowException() {
 
-        Equipment existing = createEquipment(10, 7);
-        // 3 items are already issued.
+		Equipment existing = createEquipment(10, 8);
 
-        EquipmentDTO dto = createDTO(1, 1, 2, 2);
+		EquipmentDTO dto = createDTO(1, 1, -1, -1);
 
-        when(equipmentRepository.findById(10))
-                .thenReturn(Optional.of(existing));
+		when(equipmentRepository.findById(10)).thenReturn(Optional.of(existing));
 
-        RuntimeException exception = assertThrows(
-                RuntimeException.class,
-                () -> equipmentService.updateEquipment(10, dto)
-        );
+		RuntimeException exception = assertThrows(RuntimeException.class,
+				() -> equipmentService.updateEquipment(10, dto));
 
-        assertEquals(
-                "Total quantity cannot be less than issued quantity (3).",
-                exception.getMessage()
-        );
+		assertEquals("Total quantity cannot be negative.", exception.getMessage());
 
-        verify(equipmentRepository, never()).save(any());
-    }
+		verify(equipmentRepository, never()).save(any());
+	}
 
-    @Test
-    void updateEquipment_allItemsIssued_shouldRequireLentOutStatus() {
+	@Test
+	void updateEquipment_belowIssuedQuantity_shouldThrowException() {
 
-        Equipment existing = createEquipment(10, 7);
+		Equipment existing = createEquipment(10, 7);
+		// 3 items are already issued.
 
-        EquipmentDTO dto = createDTO(1, 1, 3, 3);
-        // 3 total items, all 3 are already issued.
+		EquipmentDTO dto = createDTO(1, 1, 2, 2);
 
-        when(equipmentRepository.findById(10))
-                .thenReturn(Optional.of(existing));
+		when(equipmentRepository.findById(10)).thenReturn(Optional.of(existing));
 
-        when(availabilityRepository.findById(1))
-                .thenReturn(Optional.of(available));
+		RuntimeException exception = assertThrows(RuntimeException.class,
+				() -> equipmentService.updateEquipment(10, dto));
 
-        RuntimeException exception = assertThrows(
-                RuntimeException.class,
-                () -> equipmentService.updateEquipment(10, dto)
-        );
+		assertEquals("Total quantity cannot be less than issued quantity (3).", exception.getMessage());
 
-        assertTrue(exception.getMessage().contains(
-                "All items are issued, status must be 'Lent Out'."
-        ));
+		verify(equipmentRepository, never()).save(any());
+	}
 
-        verify(equipmentRepository, never()).save(any());
-    }
+	@Test
+	void updateEquipment_allItemsIssued_shouldRequireLentOutStatus() {
 
-    @Test
-    void updateEquipment_allItemsIssuedWithLentOut_shouldSucceed() {
+		Equipment existing = createEquipment(10, 7);
 
-        Equipment existing = createEquipment(10, 7);
+		EquipmentDTO dto = createDTO(1, 1, 3, 3);
+		// 3 total items, all 3 are already issued.
 
-        EquipmentDTO dto = createDTO(1, 2, 3, 3);
+		when(equipmentRepository.findById(10)).thenReturn(Optional.of(existing));
 
-        when(equipmentRepository.findById(10))
-                .thenReturn(Optional.of(existing));
+		when(availabilityRepository.findById(1)).thenReturn(Optional.of(available));
 
-        when(availabilityRepository.findById(2))
-                .thenReturn(Optional.of(lentOut));
+		RuntimeException exception = assertThrows(RuntimeException.class,
+				() -> equipmentService.updateEquipment(10, dto));
 
-        when(categoryRepository.findById(1))
-                .thenReturn(Optional.of(category));
+		assertTrue(exception.getMessage().contains("All items are issued, status must be 'Lent Out'."));
 
-        boolean result = equipmentService.updateEquipment(10, dto);
+		verify(equipmentRepository, never()).save(any());
+	}
 
-        assertTrue(result);
-        assertEquals(3, existing.getTotalQuantity());
-        assertEquals(0, existing.getQuantityLeft());
-        assertEquals("Lent Out",
-                existing.getAvailabilityType().getAvailabilityStatus());
+	@Test
+	void updateEquipment_allItemsIssuedWithLentOut_shouldSucceed() {
 
-        verify(equipmentRepository).save(existing);
-    }
+		Equipment existing = createEquipment(10, 7);
 
-    @Test
-    void updateEquipment_damagedWhileItemsIssued_shouldThrowException() {
+		EquipmentDTO dto = createDTO(1, 2, 3, 3);
 
-        Equipment existing = createEquipment(10, 7);
+		when(equipmentRepository.findById(10)).thenReturn(Optional.of(existing));
 
-        EquipmentDTO dto = createDTO(1, 3, 10, 10);
+		when(availabilityRepository.findById(2)).thenReturn(Optional.of(lentOut));
 
-        when(equipmentRepository.findById(10))
-                .thenReturn(Optional.of(existing));
+		when(categoryRepository.findById(1)).thenReturn(Optional.of(category));
 
-        when(availabilityRepository.findById(3))
-                .thenReturn(Optional.of(damaged));
+		boolean result = equipmentService.updateEquipment(10, dto);
 
-        RuntimeException exception = assertThrows(
-                RuntimeException.class,
-                () -> equipmentService.updateEquipment(10, dto)
-        );
+		assertTrue(result);
+		assertEquals(3, existing.getTotalQuantity());
+		assertEquals(0, existing.getQuantityLeft());
+		assertEquals("Lent Out", existing.getAvailabilityType().getAvailabilityStatus());
 
-        assertTrue(exception.getMessage().contains(
-                "Cannot mark equipment as Damaged while items are still issued."
-        ));
+		verify(equipmentRepository).save(existing);
+	}
 
-        verify(equipmentRepository, never()).save(any());
-    }
+	@Test
+	void updateEquipment_damagedWhileItemsIssued_shouldThrowException() {
 
-    @Test
-    void updateEquipment_lentOutWithSomeStockRemaining_shouldBecomeAvailable() {
+		Equipment existing = createEquipment(10, 7);
 
-        Equipment existing = createEquipment(10, 7);
+		EquipmentDTO dto = createDTO(1, 3, 10, 10);
 
-        EquipmentDTO dto = createDTO(1, 2, 12, 12);
+		when(equipmentRepository.findById(10)).thenReturn(Optional.of(existing));
 
-        when(equipmentRepository.findById(10))
-                .thenReturn(Optional.of(existing));
+		when(availabilityRepository.findById(3)).thenReturn(Optional.of(damaged));
 
-        when(availabilityRepository.findById(2))
-                .thenReturn(Optional.of(lentOut));
+		RuntimeException exception = assertThrows(RuntimeException.class,
+				() -> equipmentService.updateEquipment(10, dto));
 
-        when(availabilityRepository.findByAvailabilityStatusIgnoreCase(
-                "Available"))
-                .thenReturn(Optional.of(available));
+		assertTrue(exception.getMessage().contains("Cannot mark equipment as Damaged while items are still issued."));
 
-        when(categoryRepository.findById(1))
-                .thenReturn(Optional.of(category));
+		verify(equipmentRepository, never()).save(any());
+	}
 
-        boolean result = equipmentService.updateEquipment(10, dto);
+	@Test
+	void updateEquipment_lentOutWithSomeStockRemaining_shouldBecomeAvailable() {
 
-        assertTrue(result);
-        assertSame(available, existing.getAvailabilityType());
-        assertEquals(9, existing.getQuantityLeft());
+		Equipment existing = createEquipment(10, 7);
 
-        verify(equipmentRepository).save(existing);
-    }
+		EquipmentDTO dto = createDTO(1, 2, 12, 12);
 
-    @Test
-    void updateEquipment_lentOutWithNoIssuedItems_shouldThrowException() {
+		when(equipmentRepository.findById(10)).thenReturn(Optional.of(existing));
 
-        Equipment existing = createEquipment(10, 10);
+		when(availabilityRepository.findById(2)).thenReturn(Optional.of(lentOut));
 
-        EquipmentDTO dto = createDTO(1, 2, 12, 12);
+		when(availabilityRepository.findByAvailabilityStatusIgnoreCase("Available")).thenReturn(Optional.of(available));
 
-        when(equipmentRepository.findById(10))
-                .thenReturn(Optional.of(existing));
+		when(categoryRepository.findById(1)).thenReturn(Optional.of(category));
 
-        when(availabilityRepository.findById(2))
-                .thenReturn(Optional.of(lentOut));
+		boolean result = equipmentService.updateEquipment(10, dto);
 
-        RuntimeException exception = assertThrows(
-                RuntimeException.class,
-                () -> equipmentService.updateEquipment(10, dto)
-        );
+		assertTrue(result);
+		assertSame(available, existing.getAvailabilityType());
+		assertEquals(9, existing.getQuantityLeft());
 
-        assertTrue(exception.getMessage().contains(
-                "Cannot mark equipment as 'Lent Out' when no items are issued."
-        ));
+		verify(equipmentRepository).save(existing);
+	}
 
-        verify(equipmentRepository, never()).save(any());
-    }
+	@Test
+	void updateEquipment_lentOutWithNoIssuedItems_shouldThrowException() {
 
-    @Test
-    void updateEquipment_withoutAvailableStatus_shouldThrowException() {
+		Equipment existing = createEquipment(10, 10);
 
-        Equipment existing = createEquipment(10, 7);
+		EquipmentDTO dto = createDTO(1, 2, 12, 12);
 
-        EquipmentDTO dto = createDTO(1, 2, 12, 12);
+		when(equipmentRepository.findById(10)).thenReturn(Optional.of(existing));
 
-        when(equipmentRepository.findById(10))
-                .thenReturn(Optional.of(existing));
+		when(availabilityRepository.findById(2)).thenReturn(Optional.of(lentOut));
 
-        when(availabilityRepository.findById(2))
-                .thenReturn(Optional.of(lentOut));
+		RuntimeException exception = assertThrows(RuntimeException.class,
+				() -> equipmentService.updateEquipment(10, dto));
 
-        when(availabilityRepository.findByAvailabilityStatusIgnoreCase(
-                "Available"))
-                .thenReturn(Optional.empty());
+		assertTrue(exception.getMessage().contains("Cannot mark equipment as 'Lent Out' when no items are issued."));
 
-        RuntimeException exception = assertThrows(
-                RuntimeException.class,
-                () -> equipmentService.updateEquipment(10, dto)
-        );
+		verify(equipmentRepository, never()).save(any());
+	}
 
-        assertEquals(
-                "Available status not found in database.",
-                exception.getMessage()
-        );
+	@Test
+	void updateEquipment_withoutAvailableStatus_shouldThrowException() {
 
-        verify(equipmentRepository, never()).save(any());
-    }
+		Equipment existing = createEquipment(10, 7);
 
-    @Test
-    void updateEquipment_withInvalidCategory_shouldThrowException() {
+		EquipmentDTO dto = createDTO(1, 2, 12, 12);
 
-        Equipment existing = createEquipment(10, 10);
+		when(equipmentRepository.findById(10)).thenReturn(Optional.of(existing));
 
-        EquipmentDTO dto = createDTO(99, 1, 10, 10);
+		when(availabilityRepository.findById(2)).thenReturn(Optional.of(lentOut));
 
-        when(equipmentRepository.findById(10))
-                .thenReturn(Optional.of(existing));
+		when(availabilityRepository.findByAvailabilityStatusIgnoreCase("Available")).thenReturn(Optional.empty());
 
-        when(availabilityRepository.findById(1))
-                .thenReturn(Optional.of(available));
+		RuntimeException exception = assertThrows(RuntimeException.class,
+				() -> equipmentService.updateEquipment(10, dto));
 
-        when(categoryRepository.findById(99))
-                .thenReturn(Optional.empty());
+		assertEquals("Available status not found in database.", exception.getMessage());
 
-        RuntimeException exception = assertThrows(
-                RuntimeException.class,
-                () -> equipmentService.updateEquipment(10, dto)
-        );
+		verify(equipmentRepository, never()).save(any());
+	}
 
-        assertEquals(
-                "Invalid equipment category.",
-                exception.getMessage()
-        );
+	@Test
+	void updateEquipment_withInvalidCategory_shouldThrowException() {
 
-        verify(equipmentRepository, never()).save(any());
-    }
+		Equipment existing = createEquipment(10, 10);
 
-    // ==========================================
-    // DELETE EQUIPMENT
-    // ==========================================
+		EquipmentDTO dto = createDTO(99, 1, 10, 10);
 
-    @Test
-    void deleteEquipment_whenEquipmentExists_shouldDelete() {
+		when(equipmentRepository.findById(10)).thenReturn(Optional.of(existing));
 
-        when(equipmentRepository.existsById(10))
-                .thenReturn(true);
+		when(availabilityRepository.findById(1)).thenReturn(Optional.of(available));
 
-        boolean result = equipmentService.deleteEquipment(10);
+		when(categoryRepository.findById(99)).thenReturn(Optional.empty());
 
-        assertTrue(result);
+		RuntimeException exception = assertThrows(RuntimeException.class,
+				() -> equipmentService.updateEquipment(10, dto));
 
-        verify(equipmentRepository).deleteById(10);
-    }
+		assertEquals("Invalid equipment category.", exception.getMessage());
 
-    @Test
-    void deleteEquipment_whenEquipmentDoesNotExist_shouldReturnFalse() {
+		verify(equipmentRepository, never()).save(any());
+	}
 
-        when(equipmentRepository.existsById(99))
-                .thenReturn(false);
+	// ==========================================
+	// DELETE EQUIPMENT
+	// ==========================================
 
-        boolean result = equipmentService.deleteEquipment(99);
+	@Test
+	void deleteEquipment_whenEquipmentExists_shouldDelete() {
 
-        assertFalse(result);
+		when(equipmentRepository.existsById(10)).thenReturn(true);
 
-        verify(equipmentRepository, never()).deleteById(anyInt());
-    }
+		boolean result = equipmentService.deleteEquipment(10);
+
+		assertTrue(result);
+
+		verify(equipmentRepository).deleteById(10);
+	}
+
+	@Test
+	void deleteEquipment_whenEquipmentDoesNotExist_shouldReturnFalse() {
+
+		when(equipmentRepository.existsById(99)).thenReturn(false);
+
+		boolean result = equipmentService.deleteEquipment(99);
+
+		assertFalse(result);
+
+		verify(equipmentRepository, never()).deleteById(anyInt());
+	}
 }

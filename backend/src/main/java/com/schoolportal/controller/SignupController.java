@@ -17,28 +17,24 @@ import com.schoolportal.service.AuthService;
 @RequestMapping("/SignupServlet")
 public class SignupController {
 
-    private final AuthService authService;
+	private final AuthService authService;
 
-    public SignupController(AuthService authService) {
-        this.authService = authService;
-    }
+	public SignupController(AuthService authService) {
+		this.authService = authService;
+	}
 
-    @PostMapping
-    public ResponseEntity<Map<String, Object>> signup(
-            @RequestBody User user) {
+	@PostMapping
+	public ResponseEntity<Map<String, Object>> signup(@RequestBody User user) {
 
-        try {
+		try {
 
-            boolean result = authService.signup(user);
+			boolean result = authService.signup(user);
 
-            return ResponseEntity.ok(
-                    Map.of("success", result));
+			return ResponseEntity.ok(Map.of("success", result));
 
-        } catch (Exception e) {
+		} catch (Exception e) {
 
-            return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
-                    .body(Map.of("error", e.getMessage()));
-        }
-    }
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", e.getMessage()));
+		}
+	}
 }

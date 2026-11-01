@@ -21,59 +21,53 @@ import com.schoolportal.service.EquipmentRequestService;
 @RequestMapping("/EquipmentRequestServlet")
 public class EquipmentRequestController {
 
-    private final EquipmentRequestService equipmentRequestService;
+	private final EquipmentRequestService equipmentRequestService;
 
-    public EquipmentRequestController(EquipmentRequestService equipmentRequestService) {
-        this.equipmentRequestService = equipmentRequestService;
-    }
+	public EquipmentRequestController(EquipmentRequestService equipmentRequestService) {
+		this.equipmentRequestService = equipmentRequestService;
+	}
 
-    // POST: Create a new equipment request
-    @PostMapping
-    public ResponseEntity<Map<String, Boolean>> createEquipmentRequest(
-            @RequestBody EquipmentRequestDTO requestDTO) {
+	// POST: Create a new equipment request
+	@PostMapping
+	public ResponseEntity<Map<String, Boolean>> createEquipmentRequest(@RequestBody EquipmentRequestDTO requestDTO) {
 
-        boolean result = equipmentRequestService.createEquipmentRequest(requestDTO);
+		boolean result = equipmentRequestService.createEquipmentRequest(requestDTO);
 
-        return ResponseEntity.ok(Map.of("success", result));
-    }
+		return ResponseEntity.ok(Map.of("success", result));
+	}
 
-    // GET: Retrieve requests by status OR by student and status
-    @GetMapping("/{id}")
-    public ResponseEntity<List<EquipmentRequestDTO>> getEquipmentRequests(
-            @PathVariable int id,
-            @RequestParam(required = false) Integer statusFilterId) {
+	// GET: Retrieve requests by status OR by student and status
+	@GetMapping("/{id}")
+	public ResponseEntity<List<EquipmentRequestDTO>> getEquipmentRequests(@PathVariable int id,
+			@RequestParam(required = false) Integer statusFilterId) {
 
-        List<EquipmentRequestDTO> requests;
+		List<EquipmentRequestDTO> requests;
 
-        if (statusFilterId != null) {
-            requests = equipmentRequestService
-                    .getEquipmentRequestsByStudentAndStatus(id, statusFilterId);
-        } else {
-            requests = equipmentRequestService.getEquipmentRequestsByStatusType(id);
-        }
+		if (statusFilterId != null) {
+			requests = equipmentRequestService.getEquipmentRequestsByStudentAndStatus(id, statusFilterId);
+		} else {
+			requests = equipmentRequestService.getEquipmentRequestsByStatusType(id);
+		}
 
-        return ResponseEntity.ok(requests);
-    }
+		return ResponseEntity.ok(requests);
+	}
 
-    // PUT: Update an existing equipment request
-    @PutMapping("/{requestId}")
-    public ResponseEntity<Map<String, Boolean>> updateEquipmentRequest(
-            @PathVariable int requestId,
-            @RequestBody EquipmentRequestDTO requestDTO) {
+	// PUT: Update an existing equipment request
+	@PutMapping("/{requestId}")
+	public ResponseEntity<Map<String, Boolean>> updateEquipmentRequest(@PathVariable int requestId,
+			@RequestBody EquipmentRequestDTO requestDTO) {
 
-        boolean result = equipmentRequestService
-                .updateEquipmentRequest(requestId, requestDTO);
+		boolean result = equipmentRequestService.updateEquipmentRequest(requestId, requestDTO);
 
-        return ResponseEntity.ok(Map.of("success", result));
-    }
+		return ResponseEntity.ok(Map.of("success", result));
+	}
 
-    // DELETE: Delete an equipment request
-    @DeleteMapping("/{requestId}")
-    public ResponseEntity<Map<String, Boolean>> deleteEquipmentRequest(
-            @PathVariable int requestId) {
+	// DELETE: Delete an equipment request
+	@DeleteMapping("/{requestId}")
+	public ResponseEntity<Map<String, Boolean>> deleteEquipmentRequest(@PathVariable int requestId) {
 
-        boolean result = equipmentRequestService.deleteEquipmentRequest(requestId);
+		boolean result = equipmentRequestService.deleteEquipmentRequest(requestId);
 
-        return ResponseEntity.ok(Map.of("success", result));
-    }
+		return ResponseEntity.ok(Map.of("success", result));
+	}
 }

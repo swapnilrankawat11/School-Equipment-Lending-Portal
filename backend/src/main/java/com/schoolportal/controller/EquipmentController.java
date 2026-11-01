@@ -20,51 +20,46 @@ import com.schoolportal.service.EquipmentService;
 @RequestMapping("/EquipmentServlet")
 public class EquipmentController {
 
-    private final EquipmentService equipmentService;
+	private final EquipmentService equipmentService;
 
-    public EquipmentController(EquipmentService equipmentService) {
-        this.equipmentService = equipmentService;
-    }
+	public EquipmentController(EquipmentService equipmentService) {
+		this.equipmentService = equipmentService;
+	}
 
-    // GET: Retrieve all equipment
-    @GetMapping
-    public ResponseEntity<List<EquipmentDTO>> getAllEquipments() {
+	// GET: Retrieve all equipment
+	@GetMapping
+	public ResponseEntity<List<EquipmentDTO>> getAllEquipments() {
 
-        List<EquipmentDTO> equipments =
-                equipmentService.getAllEquipments();
+		List<EquipmentDTO> equipments = equipmentService.getAllEquipments();
 
-        return ResponseEntity.ok(equipments);
-    }
+		return ResponseEntity.ok(equipments);
+	}
 
-    // POST: Add new equipment
-    @PostMapping
-    public ResponseEntity<Map<String, Boolean>> addEquipment(
-            @RequestBody EquipmentDTO equipmentDTO) {
+	// POST: Add new equipment
+	@PostMapping
+	public ResponseEntity<Map<String, Boolean>> addEquipment(@RequestBody EquipmentDTO equipmentDTO) {
 
-        boolean result = equipmentService.addEquipment(equipmentDTO);
+		boolean result = equipmentService.addEquipment(equipmentDTO);
 
-        return ResponseEntity.ok(Map.of("success", result));
-    }
+		return ResponseEntity.ok(Map.of("success", result));
+	}
 
-    // PUT: Update existing equipment
-    @PutMapping("/{equipmentId}")
-    public ResponseEntity<Map<String, Boolean>> updateEquipment(
-            @PathVariable int equipmentId,
-            @RequestBody EquipmentDTO equipmentDTO) {
+	// PUT: Update existing equipment
+	@PutMapping("/{equipmentId}")
+	public ResponseEntity<Map<String, Boolean>> updateEquipment(@PathVariable int equipmentId,
+			@RequestBody EquipmentDTO equipmentDTO) {
 
-        boolean result = equipmentService.updateEquipment(
-                equipmentId, equipmentDTO);
+		boolean result = equipmentService.updateEquipment(equipmentId, equipmentDTO);
 
-        return ResponseEntity.ok(Map.of("success", result));
-    }
+		return ResponseEntity.ok(Map.of("success", result));
+	}
 
-    // DELETE: Delete equipment
-    @DeleteMapping("/{equipmentId}")
-    public ResponseEntity<Map<String, Boolean>> deleteEquipment(
-            @PathVariable int equipmentId) {
+	// DELETE: Delete equipment
+	@DeleteMapping("/{equipmentId}")
+	public ResponseEntity<Map<String, Boolean>> deleteEquipment(@PathVariable int equipmentId) {
 
-        boolean result = equipmentService.deleteEquipment(equipmentId);
+		boolean result = equipmentService.deleteEquipment(equipmentId);
 
-        return ResponseEntity.ok(Map.of("success", result));
-    }
+		return ResponseEntity.ok(Map.of("success", result));
+	}
 }

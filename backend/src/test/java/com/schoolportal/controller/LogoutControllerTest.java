@@ -16,29 +16,25 @@ import org.springframework.test.web.servlet.MvcResult;
 @AutoConfigureMockMvc(addFilters = false)
 class LogoutControllerTest {
 
-    @Autowired
-    private MockMvc mockMvc;
+	@Autowired
+	private MockMvc mockMvc;
 
-    @Test
-    void logout_shouldInvalidateExistingSession() throws Exception {
+	@Test
+	void logout_shouldInvalidateExistingSession() throws Exception {
 
-        MockHttpSession session = new MockHttpSession();
-        session.setAttribute("userId", 1);
+		MockHttpSession session = new MockHttpSession();
+		session.setAttribute("userId", 1);
 
-        MvcResult result = mockMvc.perform(post("/LogoutServlet")
-                .session(session))
-                .andExpect(status().isOk())
-                .andExpect(content().json("{\"success\":true}"))
-                .andReturn();
+		MvcResult result = mockMvc.perform(post("/LogoutServlet").session(session)).andExpect(status().isOk())
+				.andExpect(content().json("{\"success\":true}")).andReturn();
 
-        org.junit.jupiter.api.Assertions.assertTrue(session.isInvalid());
-    }
+		org.junit.jupiter.api.Assertions.assertTrue(session.isInvalid());
+	}
 
-    @Test
-    void logout_shouldReturnSuccessWhenNoSessionExists() throws Exception {
+	@Test
+	void logout_shouldReturnSuccessWhenNoSessionExists() throws Exception {
 
-        mockMvc.perform(post("/LogoutServlet"))
-                .andExpect(status().isOk())
-                .andExpect(content().json("{\"success\":true}"));
-    }
+		mockMvc.perform(post("/LogoutServlet")).andExpect(status().isOk())
+				.andExpect(content().json("{\"success\":true}"));
+	}
 }

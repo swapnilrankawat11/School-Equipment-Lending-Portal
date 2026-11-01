@@ -15,17 +15,17 @@ import com.schoolportal.service.UserTypeService;
 @RequestMapping("/UserTypesServlet")
 public class UserTypesController {
 
-    private final UserTypeService userTypeService;
+	private final UserTypeService userTypeService;
 
-    public UserTypesController(UserTypeService userTypeService) {
-        this.userTypeService = userTypeService;
-    }
+	public UserTypesController(UserTypeService userTypeService) {
+		this.userTypeService = userTypeService;
+	}
 
-    @GetMapping
-    public ResponseEntity<List<UserTypeDTO>> getUserTypes() {
+	@GetMapping
+	public ResponseEntity<List<UserTypeDTO>> getUserTypes() {
 
-        List<UserTypeDTO> userTypes = userTypeService.getUserTypes();
+		List<UserTypeDTO> userTypes = userTypeService.getUserTypes();
 
-        return ResponseEntity.ok(userTypes);
-    }
+		return ResponseEntity.ok(userTypes);
+	}
 }

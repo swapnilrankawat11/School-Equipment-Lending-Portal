@@ -15,18 +15,17 @@ import com.schoolportal.service.RequestStatusTypeService;
 @RequestMapping("/RequestStatusTypesServlet")
 public class RequestStatusTypesController {
 
-    private final RequestStatusTypeService statusService;
+	private final RequestStatusTypeService statusService;
 
-    public RequestStatusTypesController(RequestStatusTypeService statusService) {
-        this.statusService = statusService;
-    }
+	public RequestStatusTypesController(RequestStatusTypeService statusService) {
+		this.statusService = statusService;
+	}
 
-    @GetMapping
-    public ResponseEntity<List<RequestStatusTypeDTO>> getAllRequestStatusTypes() {
+	@GetMapping
+	public ResponseEntity<List<RequestStatusTypeDTO>> getAllRequestStatusTypes() {
 
-        List<RequestStatusTypeDTO> statuses =
-                statusService.getAllRequestStatusTypes();
+		List<RequestStatusTypeDTO> statuses = statusService.getAllRequestStatusTypes();
 
-        return ResponseEntity.ok(statuses);
-    }
+		return ResponseEntity.ok(statuses);
+	}
 }

@@ -13,33 +13,33 @@ import com.schoolportal.repository.RequestStatusTypeRepository;
 @Service
 public class RequestStatusTypeService {
 
-    private final RequestStatusTypeRepository statusRepository;
+	private final RequestStatusTypeRepository statusRepository;
 
-    public RequestStatusTypeService(RequestStatusTypeRepository statusRepository) {
-        this.statusRepository = statusRepository;
-    }
+	public RequestStatusTypeService(RequestStatusTypeRepository statusRepository) {
+		this.statusRepository = statusRepository;
+	}
 
-    @Transactional(readOnly = true)
-    public List<RequestStatusTypeDTO> getAllRequestStatusTypes() {
+	@Transactional(readOnly = true)
+	public List<RequestStatusTypeDTO> getAllRequestStatusTypes() {
 
-        List<RequestStatusType> statuses = statusRepository.findAll();
+		List<RequestStatusType> statuses = statusRepository.findAll();
 
-        return statuses.stream().map(status -> {
+		return statuses.stream().map(status -> {
 
-            RequestStatusTypeDTO dto = new RequestStatusTypeDTO();
+			RequestStatusTypeDTO dto = new RequestStatusTypeDTO();
 
-            dto.setId(status.getId());
-            dto.setStatusType(status.getStatusType());
-            dto.setDescription(status.getDescription());
+			dto.setId(status.getId());
+			dto.setStatusType(status.getStatusType());
+			dto.setDescription(status.getDescription());
 
-            dto.setCreatedBy(status.getCreatedBy());
-            dto.setModifiedBy(status.getModifiedBy());
+			dto.setCreatedBy(status.getCreatedBy());
+			dto.setModifiedBy(status.getModifiedBy());
 
-            dto.setCreatedAt(status.getCreatedAt());
-            dto.setModifiedAt(status.getModifiedAt());
+			dto.setCreatedAt(status.getCreatedAt());
+			dto.setModifiedAt(status.getModifiedAt());
 
-            return dto;
+			return dto;
 
-        }).toList();
-    }
+		}).toList();
+	}
 }

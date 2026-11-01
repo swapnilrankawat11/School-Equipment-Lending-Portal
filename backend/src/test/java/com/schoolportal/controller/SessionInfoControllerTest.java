@@ -16,44 +16,39 @@ import org.springframework.test.web.servlet.MockMvc;
 @AutoConfigureMockMvc(addFilters = false)
 class SessionInfoControllerTest {
 
-    @Autowired
-    private MockMvc mockMvc;
+	@Autowired
+	private MockMvc mockMvc;
 
-    @Test
-    void getSessionInfo_shouldReturnSessionDetailsWhenSessionExists() throws Exception {
+	@Test
+	void getSessionInfo_shouldReturnSessionDetailsWhenSessionExists() throws Exception {
 
-        MockHttpSession session = new MockHttpSession();
-        session.setAttribute("userId", 1);
-        session.setAttribute("userTypeId", 2);
-        session.setAttribute("userTypeName", "Student");
-        session.setAttribute("firstName", "John");
-        session.setAttribute("lastName", "Doe");
+		MockHttpSession session = new MockHttpSession();
+		session.setAttribute("userId", 1);
+		session.setAttribute("userTypeId", 2);
+		session.setAttribute("userTypeName", "Student");
+		session.setAttribute("firstName", "John");
+		session.setAttribute("lastName", "Doe");
 
-        mockMvc.perform(get("/SessionInfoServlet").session(session))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.userId").value(1))
-                .andExpect(jsonPath("$.userTypeId").value(2))
-                .andExpect(jsonPath("$.userTypeName").value("Student"))
-                .andExpect(jsonPath("$.firstName").value("John"))
-                .andExpect(jsonPath("$.lastName").value("Doe"));
-    }
+		mockMvc.perform(get("/SessionInfoServlet").session(session)).andExpect(status().isOk())
+				.andExpect(jsonPath("$.userId").value(1)).andExpect(jsonPath("$.userTypeId").value(2))
+				.andExpect(jsonPath("$.userTypeName").value("Student")).andExpect(jsonPath("$.firstName").value("John"))
+				.andExpect(jsonPath("$.lastName").value("Doe"));
+	}
 
-    @Test
-    void getSessionInfo_shouldReturnUnauthorizedWhenNoSessionExists() throws Exception {
+	@Test
+	void getSessionInfo_shouldReturnUnauthorizedWhenNoSessionExists() throws Exception {
 
-        mockMvc.perform(get("/SessionInfoServlet"))
-                .andExpect(status().isUnauthorized())
-                .andExpect(content().json("{\"error\":\"No active session\"}"));
-    }
+		mockMvc.perform(get("/SessionInfoServlet")).andExpect(status().isUnauthorized())
+				.andExpect(content().json("{\"error\":\"No active session\"}"));
+	}
 
-    @Test
-    void getSessionInfo_shouldReturnUnauthorizedWhenUserIdIsMissing() throws Exception {
+	@Test
+	void getSessionInfo_shouldReturnUnauthorizedWhenUserIdIsMissing() throws Exception {
 
-        MockHttpSession session = new MockHttpSession();
-        session.setAttribute("userTypeId", 2);
+		MockHttpSession session = new MockHttpSession();
+		session.setAttribute("userTypeId", 2);
 
-        mockMvc.perform(get("/SessionInfoServlet").session(session))
-                .andExpect(status().isUnauthorized())
-                .andExpect(content().json("{\"error\":\"No active session\"}"));
-    }
+		mockMvc.perform(get("/SessionInfoServlet").session(session)).andExpect(status().isUnauthorized())
+				.andExpect(content().json("{\"error\":\"No active session\"}"));
+	}
 }

@@ -13,79 +13,77 @@ import com.schoolportal.repository.EquipmentCategoryRepository;
 @Transactional
 public class EquipmentCategoryService {
 
-    private final EquipmentCategoryRepository repository;
+	private final EquipmentCategoryRepository repository;
 
-    public EquipmentCategoryService(EquipmentCategoryRepository repository) {
-        this.repository = repository;
-    }
+	public EquipmentCategoryService(EquipmentCategoryRepository repository) {
+		this.repository = repository;
+	}
 
-    // GET: Retrieve all categories
-    @Transactional(readOnly = true)
-    public List<EquipmentCategoryDTO> getAllEquipmentCategories() {
+	// GET: Retrieve all categories
+	@Transactional(readOnly = true)
+	public List<EquipmentCategoryDTO> getAllEquipmentCategories() {
 
-        List<EquipmentCategory> categories = repository.findAll();
+		List<EquipmentCategory> categories = repository.findAll();
 
-        return categories.stream().map(category -> {
+		return categories.stream().map(category -> {
 
-            EquipmentCategoryDTO dto = new EquipmentCategoryDTO();
+			EquipmentCategoryDTO dto = new EquipmentCategoryDTO();
 
-            dto.setId(category.getId());
-            dto.setCreatedBy(category.getCreatedBy());
-            dto.setModifiedBy(category.getModifiedBy());
-            dto.setCategoryName(category.getCategoryName());
-            dto.setDescription(category.getDescription());
-            dto.setCreatedAt(category.getCreatedAt());
-            dto.setModifiedAt(category.getModifiedAt());
+			dto.setId(category.getId());
+			dto.setCreatedBy(category.getCreatedBy());
+			dto.setModifiedBy(category.getModifiedBy());
+			dto.setCategoryName(category.getCategoryName());
+			dto.setDescription(category.getDescription());
+			dto.setCreatedAt(category.getCreatedAt());
+			dto.setModifiedAt(category.getModifiedAt());
 
-            return dto;
+			return dto;
 
-        }).toList();
-    }
+		}).toList();
+	}
 
-    // POST: Add a new category
-    public boolean addEquipmentCategory(EquipmentCategoryDTO dto) {
+	// POST: Add a new category
+	public boolean addEquipmentCategory(EquipmentCategoryDTO dto) {
 
-        EquipmentCategory category = new EquipmentCategory();
+		EquipmentCategory category = new EquipmentCategory();
 
-        category.setCategoryName(dto.getCategoryName());
-        category.setDescription(dto.getDescription());
-        category.setCreatedBy(dto.getCreatedBy());
-        category.setModifiedBy(dto.getModifiedBy());
+		category.setCategoryName(dto.getCategoryName());
+		category.setDescription(dto.getDescription());
+		category.setCreatedBy(dto.getCreatedBy());
+		category.setModifiedBy(dto.getModifiedBy());
 
-        repository.save(category);
+		repository.save(category);
 
-        return true;
-    }
+		return true;
+	}
 
-    // PUT: Update an existing category
-    public boolean updateEquipmentCategory(
-            int categoryId, EquipmentCategoryDTO dto) {
+	// PUT: Update an existing category
+	public boolean updateEquipmentCategory(int categoryId, EquipmentCategoryDTO dto) {
 
-        EquipmentCategory category = repository.findById(categoryId)
-                .orElse(null);
+		EquipmentCategory category = repository.findById(categoryId).orElse(null);
 
-        if (category == null) {
-            return false;
-        }
+		if (category == null) {
+			return false;
+		}
 
-        category.setCategoryName(dto.getCategoryName());
-        category.setDescription(dto.getDescription());
-        category.setModifiedBy(dto.getModifiedBy());
+		category.setCategoryName(dto.getCategoryName());
+		category.setDescription(dto.getDescription());
+		category.setModifiedBy(dto.getModifiedBy());
 
-        repository.save(category);
+		repository.save(category);
 
-        return true;
-    }
+		return true;
+	}
 
-    // DELETE: Delete a category
-    public boolean deleteEquipmentCategory(int categoryId) {
+	// DELETE: Delete a category
+	public boolean deleteEquipmentCategory(int categoryId) {
 
-        if (!repository.existsById(categoryId)) {
-            return false;
-        }
+		if (!repository.existsById(categoryId)) {
+			return false;
+		}
 
-        repository.deleteById(categoryId);
+		repository.deleteById(categoryId);
 
-        return true;
-    }
+		return true;
+	}
 }

@@ -22,64 +22,57 @@ import com.schoolportal.service.AuthService;
 @AutoConfigureMockMvc
 class SignupControllerSecurityTest {
 
-    @Autowired
-    private MockMvc mockMvc;
+	@Autowired
+	private MockMvc mockMvc;
 
-    @Autowired
-    private ObjectMapper objectMapper;
+	@Autowired
+	private ObjectMapper objectMapper;
 
-    @MockBean
-    private AuthService authService;
+	@MockBean
+	private AuthService authService;
 
-    @Test
-    void signup_withValidUser_shouldReturnSuccess() throws Exception {
-        when(authService.signup(any(User.class))).thenReturn(true);
+	@Test
+	void signup_withValidUser_shouldReturnSuccess() throws Exception {
+		when(authService.signup(any(User.class))).thenReturn(true);
 
-        User user = new User();
-        user.setFirstName("Test");
-        user.setLastName("Student");
-        user.setEmail("signup@example.com");
-        user.setPassword("password123");
+		User user = new User();
+		user.setFirstName("Test");
+		user.setLastName("Student");
+		user.setEmail("signup@example.com");
+		user.setPassword("password123");
 
-        mockMvc.perform(post("/SignupServlet")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(user)))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.success").value(true));
-    }
+		mockMvc.perform(post("/SignupServlet").contentType(MediaType.APPLICATION_JSON)
+				.content(objectMapper.writeValueAsString(user))).andExpect(status().isOk())
+				.andExpect(jsonPath("$.success").value(true));
+	}
 
-    @Test
-    void signup_whenServiceReturnsFalse_shouldReturnSuccessFalse() throws Exception {
-        when(authService.signup(any(User.class))).thenReturn(false);
+	@Test
+	void signup_whenServiceReturnsFalse_shouldReturnSuccessFalse() throws Exception {
+		when(authService.signup(any(User.class))).thenReturn(false);
 
-        User user = new User();
-        user.setFirstName("Test");
-        user.setLastName("Student");
-        user.setEmail("signup-false@example.com");
-        user.setPassword("password123");
+		User user = new User();
+		user.setFirstName("Test");
+		user.setLastName("Student");
+		user.setEmail("signup-false@example.com");
+		user.setPassword("password123");
 
-        mockMvc.perform(post("/SignupServlet")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(user)))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.success").value(false));
-    }
+		mockMvc.perform(post("/SignupServlet").contentType(MediaType.APPLICATION_JSON)
+				.content(objectMapper.writeValueAsString(user))).andExpect(status().isOk())
+				.andExpect(jsonPath("$.success").value(false));
+	}
 
-    @Test
-    void signup_whenServiceThrowsException_shouldReturnBadRequest() throws Exception {
-        when(authService.signup(any(User.class)))
-                .thenThrow(new RuntimeException("Email already exists"));
+	@Test
+	void signup_whenServiceThrowsException_shouldReturnBadRequest() throws Exception {
+		when(authService.signup(any(User.class))).thenThrow(new RuntimeException("Email already exists"));
 
-        User user = new User();
-        user.setFirstName("Test");
-        user.setLastName("Student");
-        user.setEmail("duplicate@example.com");
-        user.setPassword("password123");
+		User user = new User();
+		user.setFirstName("Test");
+		user.setLastName("Student");
+		user.setEmail("duplicate@example.com");
+		user.setPassword("password123");
 
-        mockMvc.perform(post("/SignupServlet")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(user)))
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.error").value("Email already exists"));
-    }
+		mockMvc.perform(post("/SignupServlet").contentType(MediaType.APPLICATION_JSON)
+				.content(objectMapper.writeValueAsString(user))).andExpect(status().isBadRequest())
+				.andExpect(jsonPath("$.error").value("Email already exists"));
+	}
 }
