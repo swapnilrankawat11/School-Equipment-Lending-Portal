@@ -1,0 +1,62 @@
+.form-field {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 8px; /* reduced from 12px */
+}
+
+.form-field label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 3px; /* slightly reduced */
+}
+
+/* Generic input/select */
+.form-field input,
+.form-field select {
+  width: 100%;
+  font-size: 14px;
+  padding: 7px; /* slightly tighter */
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+/* Disable duplicate borders for MUI TextField */
+.form-field .MuiOutlinedInput-root {
+  border: none !important;
+  padding: 0 !important;
+}
+
+.form-field .MuiOutlinedInput-notchedOutline {
+  border: 1px solid #ccc !important;
+  border-radius: 4px;
+}
+
+/* Hover/focus color match */
+.form-field
+  .MuiOutlinedInput-root.Mui-focused
+  .MuiOutlinedInput-notchedOutline {
+  border-color: #4c4cff !important;
+}
+
+/* Disabled state */
+.form-field input[disabled] {
+  background-color: #f7f7f7;
+  color: #555;
+  cursor: not-allowed;
+}
+
+/* Button group */
+.equipment-form-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px; /* reduced from 14px */
+}
+
+/* Optional: slightly wider for clarity */
+.modal-content {
+  width: 420px;
+  max-width: 90%;
+  padding-bottom: 18px; /* ensure buttons don’t touch edge */
+}

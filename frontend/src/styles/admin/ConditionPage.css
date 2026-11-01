@@ -1,0 +1,11 @@
+.conditions-page {
+  padding: 20px;
+  background-color: #f4f6f8;
+}
+
+.conditions-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
